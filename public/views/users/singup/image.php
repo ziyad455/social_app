@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,7 +44,7 @@
           <p class="text-gray-500">Upload a photo to personalize your profile</p>
         </div>
         
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="../../../../app/brain/signupHandling/image.php" method="post" enctype="multipart/form-data">
           <div class="mb-8">
             <div class="text-center">
               <div class="mx-auto w-32 h-32 mb-6 relative">
@@ -60,7 +62,7 @@
                 </svg>
                 Choose Photo
               </label>
-              <input type="file" name="image" id="image" accept="image/*" class="hidden" required>
+              <input type="file" name="image" id="image" accept="image/*" class="hidden">
               <p class="mt-2 text-xs text-gray-500">JPG, PNG or GIF (max 2MB)</p>
             </div>
           </div>

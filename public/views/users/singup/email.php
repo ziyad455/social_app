@@ -10,11 +10,11 @@
       theme: {
         extend: {
           colors: {
-            primary: '#3B82F6',    
-            secondary: '#1E40AF',  
-            accent: '#60A5FA',     
-            dark: '#1F2937',       
-            light: '#F0F9FF'     
+            primary: '#3B82F6',    // Bright blue
+            secondary: '#1E40AF',  // Darker blue
+            accent: '#60A5FA',     // Light blue
+            dark: '#1F2937',       // Dark gray
+            light: '#F0F9FF'       // Light blue tint
           },
           fontFamily: {
             sans: ['Inter', 'system-ui', 'sans-serif']
@@ -27,11 +27,6 @@
     }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-
-
-
-</style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen flex items-center justify-center p-4">
   <div class="w-full max-w-md">
@@ -55,23 +50,26 @@
         <form action="user_name.php" method="post">
           <div class="mb-6">
             <label for="email" class="block text-dark text-sm font-medium mb-2">Work Email</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            class="w-full px-4 py-3 rounded-lg transition text-gray-700 border border-blue-500 focus:outline-none focus:ring-2 focus:ring-accent focus:border-primary placeholder-gray-400"
-            placeholder="name@company.com"
-          >
-            <p id="email-error" class="text-red-500 text-sm mt-1 hidden">Please enter a valid email address</p>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              required
+              class="w-full px-4 py-3 rounded-lg border border-blue-200 focus:outline-none focus:ring-2 focus:ring-accent focus:border-primary transition text-gray-700"
+              placeholder="name@company.com"
+            >
           </div>
           
-          <button 
+          <button
             type="submit"
-            class="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium hover:bg-secondary transition shadow-sm"
+            class="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium hover:bg-secondary transition focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 shadow-sm"
           >
-            Next →
+            next ->
           </button>
         </form>
+        
+ 
+
         
         <div class="mt-6 text-center">
           <p class="text-gray-600 text-sm">
@@ -90,30 +88,30 @@
   </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
     const emailInput = document.getElementById("email");
     const emailError = document.getElementById("email-error");
     const form = document.querySelector("form");
 
-    const setValid = (input) => {
-        input.classList.add('border', 'border-blue-200', 'focus:outline-none', 'focus:ring-2', 'focus:ring-accent', 'focus:border-primary');
-        input.classList.remove('border-red-300', 'focus:ring-red-400', 'focus:border-red-500');
-        emailError.classList.add("hidden");
-    };
+const setValid = (input) => {
+  input.classList.add('border', 'border-blue-200', 'focus:outline-none', 'focus:ring-2', 'focus:ring-accent', 'focus:border-primary');
+  input.classList.remove('border-red-300', 'focus:ring-red-400', 'focus:border-red-500');
+  emailError.classList.add("hidden");
+};
 
-    const setInvalid = (input, message) => {
-        input.classList.add('border', 'border-red-300', 'focus:outline-none', 'focus:ring-2', 'focus:ring-red-400', 'focus:border-red-500');
-        input.classList.remove('border-blue-200', 'focus:ring-accent', 'focus:border-primary');
-        emailError.textContent = message;
-        emailError.classList.remove("hidden");
-    };
+const setInvalid = (input, message) => {
+  input.classList.add('border', 'border-red-300', 'focus:outline-none', 'focus:ring-2', 'focus:ring-red-400', 'focus:border-red-500');
+  input.classList.remove('border-blue-200', 'focus:ring-accent', 'focus:border-primary');
+  emailError.textContent = message;
+  emailError.classList.remove("hidden");
+};
 
     const hideError = () => {
-        emailError.textContent = "";
-        emailError.classList.add("hidden");
+      emailError.textContent = "";
+      emailError.classList.add("hidden");
     };
 
-    const validateEmail = async () => {
+   const validateEmail = async () => {
         const email = emailInput.value.trim();
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
