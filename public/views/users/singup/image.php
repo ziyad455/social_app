@@ -80,7 +80,7 @@ session_start();
           </div>
         </form>
         
-        <form action="" method="post" class="mb-6">
+        <form action="../../../../app/brain/signupHandling/image.php" method="post" class="mb-6">
           <button
             type="submit"
             class="w-full bg-white text-gray-600 py-3 px-4 rounded-lg font-medium border border-gray-300 hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
