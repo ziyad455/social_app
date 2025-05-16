@@ -1,10 +1,10 @@
 <?php
 
-$config = require('C:/xampp/htdocs/my-web/employees-managment/app/database/config.php');
+$config = require('config.php');
 spl_autoload_register(function ($classname) {
   require('C:/xampp/htdocs/my-web/employees-managment/app/database/'.$classname . '.php');
 });
-$db = new Database($config['DB'], 'root', 'ziyad123');
+$db = new Database($config['DB'], 'root', 'hamzahamza1221');
 
 
 ?>
