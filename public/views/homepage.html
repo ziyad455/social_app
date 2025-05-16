@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConnectHub - Your Social World</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1D9BF0', // Twitter-like blue
+            dark: '#15202B'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50">
+  <!-- Navbar -->
+  <nav class="bg-primary shadow-lg">
+    <div class="container mx-auto px-6 py-3">
+      <div class="flex justify-between items-center">
+        <!-- Logo -->
+        <div class="flex items-center space-x-2">
+          <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+          </svg>
+          <span class="text-2xl font-bold text-white">ConnectHub</span>
+        </div>
+        
+        <!-- Auth Buttons -->
+        <div class="flex space-x-3">
+          <a href="http://localhost/social_app/public/views/users/login.php"  class="px-4 py-2 text-white hover:bg-blue-600 rounded-lg transition">Log In</a>
+          <!-- <a href="C:\wamp64\www\social_app\public\views\users\singup\email.php" class="px-4 py-2 text-white hover:bg-blue-600 rounded-lg transition">Log In</a> -->
+          <a href="users/singup/email.php" class="px-4 py-2 bg-white text-primary font-medium rounded-lg hover:bg-gray-100 transition">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="container mx-auto px-6 py-16 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold text-dark mb-6">
+      <span class="text-primary">Connect</span> with the world around you
+    </h1>
+    <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
+      Share moments, discover friends, and explore what's happening. Join millions already on ConnectHub.
+    </p>
+    <div class="space-x-4">
+      <a href="#" class="px-8 py-3 bg-primary text-white rounded-full hover:bg-blue-600 transition font-medium">Get Started</a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="bg-white py-16">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center text-dark mb-16">Why Choose ConnectHub?</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="p-6 rounded-xl hover:shadow-lg transition">
+          <div class="text-primary text-4xl mb-4">👥</div>
+          <h3 class="text-xl font-bold mb-2 text-dark">Real Connections</h3>
+          <p class="text-gray-600">Find friends and communities that share your interests.</p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="p-6 rounded-xl hover:shadow-lg transition">
+          <div class="text-primary text-4xl mb-4">🔍</div>
+          <h3 class="text-xl font-bold mb-2 text-dark">Smart Search</h3>
+          <p class="text-gray-600">Discover people and content tailored just for you.</p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="p-6 rounded-xl hover:shadow-lg transition">
+          <div class="text-primary text-4xl mb-4">🛡️</div>
+          <h3 class="text-xl font-bold mb-2 text-dark">Your Privacy</h3>
+          <p class="text-gray-600">We protect your data with cutting-edge security.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us -->
+  <section class="bg-gray-100 py-16">
+    <div class="container mx-auto px-6">
+      <div class="md:flex items-center">
+        <div class="md:w-1/2 mb-10 md:mb-0">
+          <h2 class="text-3xl font-bold text-dark mb-6">About ConnectHub</h2>
+          <p class="text-gray-600 mb-4">
+            Founded in 2023, ConnectHub was born from a simple idea: social media should bring people together, not push them apart.
+          </p>
+          <p class="text-gray-600 mb-4">
+            Our team of engineers and designers have built a platform that prioritizes <span class="font-medium text-primary">real connections</span>, <span class="font-medium text-primary">transparency</span>, and <span class="font-medium text-primary">user control</span>.
+          </p>
+          <p class="text-gray-600">
+            Unlike other platforms, we never sell your data or manipulate your feed. What you see is what matters to you.
+          </p>
+        </div>
+        <div class="md:w-1/2 md:pl-12">
+          <div class="bg-primary bg-opacity-10 p-8 rounded-xl border border-primary border-opacity-20">
+            <h3 class="text-xl font-bold text-dark mb-4">Our Mission</h3>
+            <p class="text-gray-600 italic">
+              "To create a social platform that respects users while delivering the best connection experience."
+            </p>
+            <div class="mt-6 flex items-center">
+              <div class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-4">CT</div>
+              <div>
+                <p class="font-medium text-dark">Chris Taylor</p>
+                <p class="text-sm text-gray-500">Founder & CEO</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-12">
+    <div class="container mx-auto px-6">
+      <div class="md:flex justify-between">
+        <div class="mb-8 md:mb-0">
+          <div class="flex items-center space-x-2 mb-4">
+            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+            </svg>
+            <span class="text-xl font-bold">ConnectHub</span>
+          </div>
+          <p class="text-gray-400 max-w-xs">Making the world smaller, one connection at a time.</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+          <div>
+            <h4 class="font-bold mb-4">Product</h4>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Features</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Download</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Status</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-4">Company</h4>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white transition">About</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Jobs</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Brand</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-4">Support</h4>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Help</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Safety</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Terms</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+        <p>© 2023 ConnectHub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
