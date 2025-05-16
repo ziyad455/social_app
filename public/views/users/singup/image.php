@@ -1,5 +1,8 @@
 
+<?php
+session_start();
 
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,7 +106,7 @@
   </div>
 
   <script>
-    // Add JavaScript for image preview
+    
     document.addEventListener('DOMContentLoaded', function() {
       const fileInput = document.getElementById('image');
       const imagePreview = document.getElementById('image-preview');

@@ -48,7 +48,7 @@
         </div>
         
         <form action="user_name.php" method="post">
-          <div class="mb-6">
+          <div class="mb-2">
             <label for="email" class="block text-dark text-sm font-medium mb-2">Work Email</label>
             <input
               type="email"
@@ -59,6 +59,7 @@
               placeholder="name@company.com"
             >
           </div>
+          <div id="email-error" class="text-red-500 text-sm mb-4 hidden"></div>
           
           <button
             type="submit"
@@ -124,7 +125,7 @@ const setInvalid = (input, message) => {
         }
 
         try {
-            const response = await fetch('../../../../app/brain/singup_handling/email.php', {
+            const response = await fetch('../../../../app/brain/signupHandling/email.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'

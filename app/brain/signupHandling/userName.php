@@ -17,6 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['fname'] = $fname;
     $_SESSION['lname'] = $lname;
 
-    header("Location: ../../../public/views/users/singup/image.php");
+    header("Location: ../../../public/views/users/singup/password.php");
     exit;
 }
