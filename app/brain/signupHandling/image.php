@@ -36,16 +36,6 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (move_uploaded_file($imageTmp, $targetFile)) {
       echo " image moved sucsufuly";
-  //     // $sql = "INSERT INTO products(name,mobile,image) VALUES (?,?,?) ";
-  //     // $stmt = $conn->prepare($sql);
-  //     // echo "no problem de upload limage";
-  //     // if ($stmt->execute([$username, $mobile, $imageName])) {
-  //     //   header("Location: index.php"); 
-  //     //   exit;
-  //     // } else {
-  //     //   echo " not good .";
-  //     //   print_r($stmt->errorInfo()); 
-  //     // }
 
     } else {
       echo "probleme de upload l'image ";
