@@ -107,6 +107,15 @@
         </p>
       </div>
     </div>
+                <div class="mt-8 flex justify-center">
+                <div class="flex space-x-1">
+                    <div class="w-6 h-1 rounded-full bg-blue-500"></div>
+                    <div class="w-6 h-1 rounded-full bg-blue-500"></div>
+                    <div class="w-6 h-1 rounded-full bg-gray-300"></div>
+                    <div class="w-6 h-1 rounded-full bg-gray-300"></div>
+                    <div class="w-6 h-1 rounded-full bg-gray-300"></div>
+                </div>
+            </div>
   </div>
   <script src="../../../assist/js/user_name.js"></script>
 </body>
