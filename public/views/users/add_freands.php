@@ -145,13 +145,13 @@
     </div>
 
     <script>
-        // Add friend functionality
+ 
         document.querySelectorAll('button:not([class*="Skip"])').forEach(button => {
             button.addEventListener('click', function() {
                 const card = this.closest('.bg-white');
                 const name = card.querySelector('h3').textContent;
                 
-                // Change button state
+               
                 this.innerHTML = '<i class="fas fa-check mr-2"></i> Request Sent';
                 this.classList.remove('bg-blue-500', 'hover:bg-blue-600');
                 this.classList.add('bg-gray-300', 'hover:bg-gray-400', 'text-gray-700');
