@@ -46,7 +46,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST') {
         $uername = $_SESSION['fname'] . " " . $_SESSION['lname'];
         $email = $_SESSION['email'];
         $password = $_SESSION['password'];
-        $db->insert($query, [$uername, $email, $password, $targetFile]);
+        $db->insert($query, [$uername, $email, $password, $newImageName]);
         header("Location: ../../../public/views/users/add_freands.php");
       }
       catch (Exception $e) {
