@@ -46,7 +46,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST') {
         $uername = $_SESSION['fname'] . " " . $_SESSION['lname'];
         $email = $_SESSION['email'];
         $password = $_SESSION['password'];
+
         $db->insert($query, [$uername, $email, $password, $newImageName]);
+        $_SESSION['id'] = $db->selectOne("SELECT id FROM users WHERE email = ?", [$email])['id'];
         header("Location: ../../../public/views/users/add_freands.php");
       }
       catch (Exception $e) {
@@ -63,8 +65,12 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST') {
         $uername = $_SESSION['fname'] . " " . $_SESSION['lname'];
         $email = $_SESSION['email'];
         $password = $_SESSION['password'];
+        $newImageName = "profile.webp";
+        
 
-        $db->insert($query, [$uername, $email, $password]);
+        $db->insert($query, [$uername, $email, $password, $newImageName]);
+        $_SESSION['id'] = $db->selectOne("SELECT id FROM users WHERE email = ?", [$email])['id'];
+
         header("Location: ../../../public/views/users/add_freands.php");
         exit();
       }
