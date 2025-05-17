@@ -45,6 +45,9 @@ class Database{
     $stmt = $this->conection->prepare($query);
     return $stmt->execute($params);
   }
+  public function lastInsertId() {
+    return $this->conection->lastInsertId();
+  }
 
   public function getConnectionStatus() {
     echo  $this->conection ? "Connected successfully" : "Not connected";

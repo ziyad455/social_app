@@ -1,167 +1,162 @@
+<?php
+require('../../../app/database/conectdb.php');
+session_start();
+$users = $db->selectALL('SELECT * FROM users WHERE email != ? LIMIT 6', [$_SESSION['email']]);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect with Friends</title>
+    <title>Enhanced Connection Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-4xl bg-white rounded-xl shadow-md overflow-hidden">
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold">Last Step!</h1>
-                    <p class="text-blue-100">Connect with people you may know</p>
+    <div class="w-full max-w-4xl bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+        <!-- Enhanced Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white relative overflow-hidden">
+            <!-- Abstract Background Elements -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white bg-opacity-10 rounded-full -mr-16 -mt-16"></div>
+            <div class="absolute bottom-0 left-0 w-40 h-40 bg-white bg-opacity-10 rounded-full -ml-20 -mb-20"></div>
+            
+            <div class="flex items-center justify-between relative z-10">
+                <div class="space-y-1">
+                    <h1 class="text-3xl font-bold tracking-tight">Last Step!</h1>
+                    <p class="text-blue-100 text-lg">Connect with people you may know</p>
+                    <p class="text-blue-200 text-sm mt-2">Build your network with professionals in your field</p>
                 </div>
-                <div class="w-12 h-12 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
-                    <i class="fas fa-user-friends text-xl"></i>
+                <div class="w-16 h-16 rounded-full bg-white bg-opacity-20 flex items-center justify-center shadow-lg backdrop-blur-sm">
+                    <i class="fas fa-user-friends text-2xl"></i>
                 </div>
             </div>
         </div>
-
-        <!-- Main Content -->
-        <div class="p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-6">Suggested Connections</h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Person 1 -->
-                <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="p-4">
-                        <div class="flex justify-center mb-4">
-                            <div class="w-20 h-20 rounded-full bg-blue-100 overflow-hidden border-2 border-white shadow-md">
-                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile" class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <h3 class="font-medium text-gray-900">Sarah Johnson</h3>
-                            <p class="text-sm text-gray-500 mb-3">5 mutual friends</p>
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors w-full">
-                                <i class="fas fa-user-plus mr-2"></i> Add Friend
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Person 2 -->
-                <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="p-4">
-                        <div class="flex justify-center mb-4">
-                            <div class="w-20 h-20 rounded-full bg-blue-100 overflow-hidden border-2 border-white shadow-md">
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <h3 class="font-medium text-gray-900">Michael Chen</h3>
-                            <p class="text-sm text-gray-500 mb-3">2 mutual friends</p>
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors w-full">
-                                <i class="fas fa-user-plus mr-2"></i> Add Friend
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-            
-                <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="p-4">
-                        <div class="flex justify-center mb-4">
-                            <div class="w-20 h-20 rounded-full bg-blue-100 overflow-hidden border-2 border-white shadow-md">
-                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Profile" class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <h3 class="font-medium text-gray-900">Emma Rodriguez</h3>
-                            <p class="text-sm text-gray-500 mb-3">Works at TechCorp</p>
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors w-full">
-                                <i class="fas fa-user-plus mr-2"></i> Add Friend
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Person 4 -->
-                <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="p-4">
-                        <div class="flex justify-center mb-4">
-                            <div class="w-20 h-20 rounded-full bg-blue-100 overflow-hidden border-2 border-white shadow-md">
-                                <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Profile" class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <h3 class="font-medium text-gray-900">David Wilson</h3>
-                            <p class="text-sm text-gray-500 mb-3">3 mutual friends</p>
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors w-full">
-                                <i class="fas fa-user-plus mr-2"></i> Add Friend
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Person 5 -->
-                <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="p-4">
-                        <div class="flex justify-center mb-4">
-                            <div class="w-20 h-20 rounded-full bg-blue-100 overflow-hidden border-2 border-white shadow-md">
-                                <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Profile" class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <h3 class="font-medium text-gray-900">Olivia Smith</h3>
-                            <p class="text-sm text-gray-500 mb-3">From your hometown</p>
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors w-full">
-                                <i class="fas fa-user-plus mr-2"></i> Add Friend
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Person 6 -->
-                <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="p-4">
-                        <div class="flex justify-center mb-4">
-                            <div class="w-20 h-20 rounded-full bg-blue-100 overflow-hidden border-2 border-white shadow-md">
-                                <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="Profile" class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <h3 class="font-medium text-gray-900">James Brown</h3>
-                            <p class="text-sm text-gray-500 mb-3">Went to Stanford</p>
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors w-full">
-                                <i class="fas fa-user-plus mr-2"></i> Add Friend
-                            </button>
-                        </div>
-                    </div>
+        
+        <!-- Enhanced Main Content -->
+        <div class="p-6 md:p-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800">Suggested Connections</h2>
+                <div class="text-sm text-blue-600 font-medium flex items-center">
+                    <span>View all</span>
+                    <i class="fas fa-chevron-right ml-1 text-xs"></i>
                 </div>
             </div>
+            
+            <!-- Connection Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <?php foreach ($users as $user): ?>
+                    <?php
+                        $createdAt = new DateTime($user["created_at"]);
+                        $now = new DateTime();
+                        $interval = $createdAt->diff($now);
 
-            <div class="mt-8 flex justify-center">
-                <button class="px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-full font-medium hover:bg-gray-50 transition-colors">
-                    Skip for now
+                        if ($interval->y > 0) {
+                            $joined = "joined " . $interval->y . " year" . ($interval->y > 1 ? "s" : "") . " ago";
+                        } elseif ($interval->m > 0) {
+                            $joined = "joined " . $interval->m . " month" . ($interval->m > 1 ? "s" : "") . " ago";
+                        } elseif ($interval->d > 0) {
+                            $joined = "joined " . $interval->d . " day" . ($interval->d > 1 ? "s" : "") . " ago";
+                        } elseif ($interval->h > 0) {
+                            $joined = "joined " . $interval->h . " hour" . ($interval->h > 1 ? "s" : "") . " ago";
+                        } elseif ($interval->i > 0) {
+                            $joined = "joined " . $interval->i . " minute" . ($interval->i > 1 ? "s" : "") . " ago";
+                        } else {
+                            $joined = "joined just now";
+                        }
+                        ?>
+
+                <!-- Connection Card with Enhanced Styling -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 overflow-hidden group">
+                    <!-- Card Header with Background Gradient -->
+                    <div class="h-12 bg-gradient-to-r from-blue-50 to-indigo-50 relative">
+                        <div class="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
+                            <div class="w-20 h-20 rounded-full bg-white p-1 shadow-md overflow-hidden">
+                                <img src="../../assist/profiles/<?php echo $user["profile_picture"] ?>" alt="Profile" class="w-full h-full object-cover rounded-full">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-12 p-4">
+                        <div class="text-center">
+                            <h3 class="font-semibold text-gray-900 text-lg"><?php echo ucwords($user["username"])?></h3>
+                            <p class="text-gray-500 mb-1 text-sm"><?php echo isset($user["profession"]) ? $user["profession"] : "Professional" ?></p>
+                            <div class="flex items-center justify-center mb-4 text-xs text-gray-400">
+                                <i class="fas fa-user-friends mr-1"></i>
+                                <span> <?php echo $joined?> </span>
+                            </div>
+                            
+                            <button class="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-medium transition-colors w-full flex items-center justify-center group-hover:shadow-md" data-user-id="<?php echo $user['id'] ?>">
+                                <i class="fas fa-user-plus mr-2"></i> Connect
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            
+            <!-- "See More" Section -->
+            <div class="mt-8 flex items-center justify-center">
+                <button class="px-8 py-3 bg-white border border-gray-300 text-gray-700 rounded-full font-medium hover:bg-gray-50 active:bg-gray-100 transition-colors flex items-center shadow-sm hover:shadow">
+                    <span>Continue</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
                 </button>
+            </div>
+            
+            <!-- Progress Indicator -->
+            <div class="mt-8 flex justify-center">
+                <div class="flex space-x-1">
+                    <div class="w-6 h-1 rounded-full bg-blue-500"></div>
+                    <div class="w-6 h-1 rounded-full bg-blue-500"></div>
+                    <div class="w-6 h-1 rounded-full bg-blue-500"></div>
+                    <div class="w-6 h-1 rounded-full bg-blue-500"></div>
+                    <div class="w-6 h-1 rounded-full bg-blue-500"></div>
+
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
- 
-        document.querySelectorAll('button:not([class*="Skip"])').forEach(button => {
-            button.addEventListener('click', function() {
-                const card = this.closest('.bg-white');
-                const name = card.querySelector('h3').textContent;
-                
-               
-                this.innerHTML = '<i class="fas fa-check mr-2"></i> Request Sent';
-                this.classList.remove('bg-blue-500', 'hover:bg-blue-600');
-                this.classList.add('bg-gray-300', 'hover:bg-gray-400', 'text-gray-700');
-                this.disabled = true;
-                
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.bg-white.rounded-xl button').forEach(button => {
+                button.addEventListener('click',async function() {
+                    const card = this.closest('.bg-white.rounded-xl');
+                    const name = card.querySelector('h3').textContent;
+                    
+            
+                    this.innerHTML = '<i class="fas fa-check mr-2"></i> Request Sent';
+                    this.classList.remove('bg-blue-500', 'hover:bg-blue-600', 'active:bg-blue-700');
+                    this.classList.add('bg-gray-300', 'hover:bg-gray-400', 'text-gray-700');
+                    this.disabled = true;
+                    
+
+                    card.classList.remove('hover:-translate-y-1', 'group-hover:shadow-md');
+
+
+                    
+             
+                
+                    const userId = this.getAttribute('data-user-id');
+                    console.log(userId);
+                    const response = await fetch('../../../app/brain/signupHandling/add_friends.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ userId: userId })
+                    });
+                    const result = await response.json();
+                    if (result.status === 'success') {
+                        console.log(`Connection request sent to ${name}`);
+                    } else {
+                        console.error(`Error sending connection request: ${result.message}`);
+                    }
+                });
             });
         });
-
-
     </script>
 </body>
 </html>
