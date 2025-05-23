@@ -45,9 +45,9 @@
       <form action="../../../app/brain/loginControler.php" method="POST">
         <input
           type="text"
-          name="username"
+          name="email"
           class="w-full px-4 py-3 rounded-lg border border-blue-200 focus:outline-none focus:ring-2 focus:ring-accent focus:border-primary transition text-gray-700 mb-4"
-          placeholder="Username"
+          placeholder="email"
         >
         <input
           type="password"

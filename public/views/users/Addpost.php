@@ -1,182 +1,475 @@
 <?php
 session_start();
-
-
-
+// var_dump($_SESSION);
+// die();
 require "../../../app/database/conectdb.php";
-
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Add New Post</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Create New Post</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1877f2;
+      --primary-hover: #166fe5;
+      --secondary: #e4e6eb;
+      --text-primary: #050505;
+      --text-secondary: #65676b;
+      --background: #f0f2f5;
+      --card-bg: #ffffff;
+      --border: #dddfe2;
+      --error: #f02849;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    body {
+      background-color: var(--background);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .post-creation-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 500px;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .post-creation-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+    }
+    
+    .card-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .close-btn:hover {
+      color: var(--text-primary);
+    }
+    
+    .post-form {
+      padding: 20px;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 12px;
+      border: 1px solid var(--border);
+    }
+    
+    .user-name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .post-textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      resize: none;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    
+    .post-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+    }
+    
+    .post-textarea::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+    
+    .image-upload-container {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s;
+      margin-bottom: 20px;
+    }
+    
+    .image-upload-container:hover {
+      border-color: var(--primary);
+      background: rgba(24, 119, 242, 0.05);
+    }
+    
+    .image-upload-container.active {
+      border-color: var(--primary);
+      background: rgba(24, 119, 242, 0.05);
+    }
+    
+    .upload-icon {
+      font-size: 40px;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    
+    .upload-text {
+      color: var(--text-primary);
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    
+    .upload-subtext {
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+    
+    .file-input {
+      display: none;
+    }
+    
+    .image-preview-container {
+      position: relative;
+      margin-bottom: 20px;
+      display: none;
+    }
+    
+    .preview-image {
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .remove-image-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--error);
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .remove-image-btn:hover {
+      background: #d42d3d;
+    }
+    
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .submit-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .submit-btn:hover {
+      background-color: var(--primary-hover);
+    }
+    
+    .submit-btn:disabled {
+      background-color: var(--secondary);
+      cursor: not-allowed;
+    }
+    
+    .character-counter {
+      text-align: right;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: -15px;
+      margin-bottom: 15px;
+    }
+    
+    .error-message {
+      color: var(--error);
+      font-size: 13px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .color-picker-container {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 15px;
+      padding: 5px;
+    }
+    
+    .color-option {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    .color-option:hover {
+      transform: scale(1.1);
+    }
+    
+    .color-option.selected {
+      border: 2px solid #333;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    
+    @media (max-width: 480px) {
+      .post-creation-card {
+        border-radius: 0;
+      }
+      
+      body {
+        padding: 0;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
-<style>
-  body {
-    background-color: #f0f2f5;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-
-  .post-form-container {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    width: 450px;
-    text-align: center;
-  }
-
-  .post-form h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-
-  .post-form label {
-    display: block;
-    text-align: left;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-  }
-
-  .post-form textarea,
-  .post-form input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-  }
-
-  .image-preview {
-    margin-top: 15px;
-    border: 2px dashed #ccc;
-    padding: 10px;
-    border-radius: 10px;
-    text-align: center;
-    min-height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .image-preview img {
-    max-width: 100%;
-    max-height: 200px;
-    border-radius: 8px;
-    object-fit: contain;
-  }
-
-  .image-preview span {
-    color: #777;
-  }
-
-  .post-form button {
-    margin-top: 20px;
-    width: 100%;
-    padding: 12px;
-    background-color: #1877f2;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-
-  .post-form button:hover {
-    background-color: #155cc0;
-  }
-
-  .remove-image {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: rgba(0,0,0,0.5);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    cursor: pointer;
-    display: none;
-  }
-</style>
 <body>
-  <div class="post-form-container">
-    <h2>Add New Post</h2>
-    <form class="post-form">
-      <label for="description">Description:</label>
-      <textarea id="description" name="description" rows="4" placeholder="Write something..."></textarea>
-
-      <label for="image">Select Image:</label>
-      <input type="file" id="image" name="image" accept="image/*">
-
-      <div class="image-preview" id="imagePreview">
-        <span>No image selected</span>
-        <button class="remove-image" id="removeImage">×</button>
+  <div class="post-creation-card">
+    <div class="card-header">
+      <h2 class="card-title">Create Post</h2>
+      <button class="close-btn">&times;</button>
+    </div>
+    
+    <form action="../../../app/brain/user/post.php" class="post-form" method="POST" enctype="multipart/form-data">
+      <div class="user-info">
+        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="User" class="user-avatar">
+        <span class="user-name">Sarah Miller</span>
       </div>
-
-      <button type="submit">Post</button>
+      
+      <div class="form-group">
+        <textarea class="post-textarea" id="description" name="description" placeholder="What's on your mind?" maxlength="500"></textarea>
+        <div class="character-counter"><span id="charCount">0</span>/500</div>
+      </div>
+      
+      <!-- Color Picker Section -->
+      <div class="color-picker-container">
+        <div class="color-option" data-color="#ffffff" style="background-color: #ffffff; border: 1px solid #ddd;"></div>
+        <div class="color-option" data-color="#ffe6e6" style="background-color: #ffe6e6;"></div>
+        <div class="color-option" data-color="#e6f7ff" style="background-color: #e6f7ff;"></div>
+        <div class="color-option" data-color="#e6ffe6" style="background-color: #e6ffe6;"></div>
+        <div class="color-option" data-color="#fff2e6" style="background-color: #fff2e6;"></div>
+        <div class="color-option" data-color="#f0e6ff" style="background-color: #f0e6ff;"></div>
+      </div>
+      
+      <div class="image-upload-container" id="uploadContainer">
+        <div class="upload-icon">
+          <i class="fas fa-cloud-upload-alt"></i>
+        </div>
+        <div class="upload-text">Add Photos/Videos</div>
+        <div class="upload-subtext">or drag and drop</div>
+        <input type="file" id="image" name="image" accept="image/*" class="file-input">
+      </div>
+      
+      <div class="image-preview-container" id="previewContainer">
+        <img src="" alt="Preview" class="preview-image" id="previewImage">
+        <button type="button" class="remove-image-btn" id="removeImageBtn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="error-message" id="errorMessage">
+        Please add either text or an image to your post
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="submit-btn" id="submitBtn" disabled>
+          <i class="fas fa-paper-plane"></i> Post
+        </button>
+      </div>
     </form>
   </div>
 
+
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const imageInput = document.getElementById('image');
-      const imagePreview = document.getElementById('imagePreview');
-      const removeImageBtn = document.getElementById('removeImage');
-      const defaultText = imagePreview.querySelector('span');
-
-      imageInput.addEventListener('change', function() {
-        const file = this.files[0];
+      const textarea = document.querySelector('.post-textarea');
+      const fileInput = document.getElementById('image');
+      const uploadContainer = document.getElementById('uploadContainer');
+      const previewContainer = document.getElementById('previewContainer');
+      const previewImage = document.getElementById('previewImage');
+      const removeImageBtn = document.getElementById('removeImageBtn');
+      const charCount = document.getElementById('charCount');
+      const submitBtn = document.getElementById('submitBtn');
+      const errorMessage = document.getElementById('errorMessage');
+      const closeBtn = document.querySelector('.close-btn');
+      const colorOptions = document.querySelectorAll('.color-option');
+      
+      // Character counter
+      textarea.addEventListener('input', function() {
+        const count = this.value.length;
+        charCount.textContent = count;
+        validateForm();
+      });
+      
+      // File upload handling
+      uploadContainer.addEventListener('click', function() {
+        fileInput.click();
+      });
+      
+      // Drag and drop functionality
+      uploadContainer.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.classList.add('active');
+      });
+      
+      uploadContainer.addEventListener('dragleave', function() {
+        this.classList.remove('active');
+      });
+      
+      uploadContainer.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('active');
         
-        if (file) {
-          const reader = new FileReader();
-
-          reader.onload = function(e) {
-            defaultText.style.display = 'none';
-            removeImageBtn.style.display = 'block';
-            
-            let img = imagePreview.querySelector('img');
-            if (!img) {
-              img = document.createElement('img');
-              imagePreview.appendChild(img);
-            }
-            
-            img.src = e.target.result;
-          };
-
-          reader.readAsDataURL(file);
-        } else {
-          defaultText.style.display = 'block';
-          removeImageBtn.style.display = 'none';
-          const img = imagePreview.querySelector('img');
-          if (img) img.remove();
+        if (e.dataTransfer.files.length) {
+          fileInput.files = e.dataTransfer.files;
+          handleFileSelect();
         }
       });
-
+      
+      fileInput.addEventListener('change', handleFileSelect);
+      
+      function handleFileSelect() {
+        const file = fileInput.files[0];
+        
+        if (file && file.type.match('image.*')) {
+          const reader = new FileReader();
+          
+          reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewContainer.style.display = 'block';
+            uploadContainer.style.display = 'none';
+            validateForm();
+          };
+          
+          reader.readAsDataURL(file);
+        } else {
+          showError('Please select a valid image file');
+        }
+      }
+      
       removeImageBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        imageInput.value = '';
-        defaultText.style.display = 'block';
-        removeImageBtn.style.display = 'none';
-        const img = imagePreview.querySelector('img');
-        if (img) img.remove();
+        fileInput.value = '';
+        previewContainer.style.display = 'none';
+        uploadContainer.style.display = '';
+        validateForm();
+      });
+      
+      // Color selection functionality
+      colorOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          // Remove selected class from all options
+          colorOptions.forEach(opt => opt.classList.remove('selected'));
+          
+          // Add selected class to clicked option
+          this.classList.add('selected');
+          
+          // Set textarea background color
+          const selectedColor = this.getAttribute('data-color');
+          textarea.style.backgroundColor = selectedColor;
+          
+          // If selecting a color, remove any image
+          fileInput.value = '';
+          previewContainer.style.display = 'none';
+          uploadContainer.style.display = '';
+          
+          validateForm();
+        });
+      });
+      
+      function validateForm() {
+        const hasText = textarea.value.trim().length > 0;
+        const hasImage = fileInput.files.length > 0;
+        const hasBackground = textarea.style.backgroundColor && textarea.style.backgroundColor !== 'rgba(0, 0, 0, 0)';
+        
+        if (hasText || hasImage || hasBackground) {
+          submitBtn.disabled = false;
+          errorMessage.style.display = 'none';
+        } else {
+          submitBtn.disabled = true;
+        }
+      }
+      
+      function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+        setTimeout(() => {
+          errorMessage.style.display = 'none';
+        }, 3000);
+      }
+      
+      // Close button functionality
+      closeBtn.addEventListener('click', function() {
+        // Add your close/redirect logic here
+        console.log('Close button clicked');
       });
     });
   </script>
 </body>
-</html>

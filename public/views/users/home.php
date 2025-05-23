@@ -1,5 +1,54 @@
-<?php 
-require "../../../app/database/conectdb.php"
+<?php
+
+use BcMath\Number;
+
+session_start();
+require "../../../app/database/conectdb.php";
+$userId = $_SESSION['id'];
+
+$query = "
+SELECT posts.*, users.username, users.profile_picture
+FROM posts 
+JOIN users ON posts.user_id = users.id 
+WHERE posts.user_id != ? 
+ORDER BY posts.created_at DESC
+";
+$posts = $db->selectALL($query, [$userId]);
+
+
+
+$query1 = 'SELECT * FROM users WHERE id = ?';
+$user = $db->selectOne($query1,[$userId]);
+
+function createdAt($createdAt) {
+    date_default_timezone_set('Africa/Casablanca');
+
+    $cr = strtotime($createdAt);
+    $now = time();
+    $diff = $now - $cr;
+
+    if ($diff < 0) {
+        return "Now";
+    }
+
+    if ($diff < 60) {
+        return "$diff seconds ago";
+    } elseif ($diff < 3600) {
+        $minutes = floor($diff / 60);
+        return "$minutes minutes ago";
+    } elseif ($diff < 86400) {
+        $hours = floor($diff / 3600);
+        return "$hours hours ago";
+    } elseif ($diff < 604800) {
+        $days = floor($diff / 86400);
+        return "$days days ago";
+    } else {
+        return date("Y-m-d", $cr);
+    }
+}
+
+
+
 
 ?>
 
@@ -19,11 +68,11 @@ require "../../../app/database/conectdb.php"
     <!-- Left Sidebar -->
     <aside class="left-sidebar">
       <div class="profile-link">
-        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Profile" class="profile-pic">
-        <span>Ahmed Mohamed</span>
+        <img src="../../../public/assist/profiles/<?= htmlspecialchars($user['profile_picture']) ?>" class="profile-pic" />
+        <span><?=  $user['username'] ?></span>
       </div>
       <ul class="sidebar-links">
-        <li><i class="fas fa-user"></i> Profile</li>
+        <li><i class="fas fa-user"></i><a style="text-decoration: none;color:black;" href="profile.php">Profile</a> </li>
         <li><i class="fas fa-users"></i> Friends</li>
         <li><i class="fas fa-users-cog"></i> Groups</li>
         <li><i class="fas fa-flag"></i> Pages</li>
@@ -70,12 +119,12 @@ require "../../../app/database/conectdb.php"
         <!-- Create Post -->
         <!-- Create Post -->
       <div class="create-post">
-        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Profile Pic" class="profile-pic" />
+        <img src="../../../public/assist/profiles/<?= htmlspecialchars($user['profile_picture']) ?>" class="profile-pic" />
         <input type="text" placeholder="What's on your mind?" />
         <!-- Add this button -->
         <button class="add-post-btn">
           <a href="Addpost.php">
-                      <i class="fas fa-paper-plane"></i>
+              <i class="fas fa-paper-plane"></i>
           </a>
         </button>
       </div>
@@ -83,18 +132,28 @@ require "../../../app/database/conectdb.php"
         
 
         <!-- Posts -->
-       
+     <?php foreach ($posts as $post) : ?>
         <div class="posts">
           <div class="post">
             <div class="post-header">
-              <img src="https://randomuser.me/api/portraits/women/65.jpg" class="profile-pic" />
+
+              <img src="../../../public/assist/profiles/<?= htmlspecialchars($post['profile_picture']) ?>" class="profile-pic" />
               <div>
-                <h4>Sarah</h4>
-                <small>2 hrs ago</small>
+                <h4><strong><?= htmlspecialchars($post['username']) ?></strong></h4>
+                <small><?php echo createdAt($post['created_at']) ?></small>
+                
+
               </div>
             </div>
-            <p>Enjoying the sunny weather!</p>
-            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" class="post-img" />
+
+            <?php if (!empty($post['description'])): ?>
+              <p><?= htmlspecialchars($post['description']) ?></p>
+            <?php endif; ?>
+
+            <?php if (!empty($post['image_path'])): ?>
+              <img src="../../../public/assist/posts/<?= htmlspecialchars($post['image_path']) ?>" class="post-img" />
+            <?php endif; ?>
+
             <div class="post-actions">
               <button><i class="fas fa-thumbs-up"></i> Like</button>
               <button><i class="fas fa-comment"></i> Comment</button>
@@ -102,6 +161,9 @@ require "../../../app/database/conectdb.php"
             </div>
           </div>
         </div>
+<?php endforeach ?>
+
+
       </section>
     </main>
 
@@ -117,6 +179,8 @@ require "../../../app/database/conectdb.php"
       <h4>Sponsored</h4>
       <img src="https://via.placeholder.com/200x100" alt="Ad" />
     </aside>
+
+    
 
   </div>
 </body>
