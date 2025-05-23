@@ -313,6 +313,7 @@ $friends = $db->selectALL('SELECT * FROM users WHERE id IN (SELECT CASE WHEN use
                     e.preventDefault();
                     const card = this.closest('.friend-card');
                     const name = card.querySelector('h3').textContent;
+                    card.style.display = 'none'
 
                     
                     

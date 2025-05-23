@@ -25,6 +25,7 @@ class Database{
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
+
   public function selectOne($query, $params = []){
     $stmt = $this->conection->prepare($query);
     $stmt->execute($params);

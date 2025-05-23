@@ -1,18 +1,52 @@
-<?php 
+<?php
+
+
+
 session_start();
-if (!isset($_SESSION['id'])) {
-    header("Location: ../../../index.php");
-    exit();
-}
 require "../../../app/database/conectdb.php";
-$user = $db->selectOne("SELECT * FROM users WHERE id = ?", [$_SESSION['id']]);
+
+$userId = $_SESSION['id'];
+
+$query = "
+SELECT posts.*, users.username, users.profile_picture
+FROM posts 
+JOIN users ON posts.user_id = users.id 
+WHERE posts.user_id != ? 
+ORDER BY posts.created_at DESC
+";
+$posts = $db->selectALL($query, [$userId]);
+
+
+
+$query1 = 'SELECT * FROM users WHERE id = ?';
+$user = $db->selectOne($query1,[$userId]);
 require "nav.php";
 
+function createdAt($createdA) {
+      $createdAt = new DateTime($createdA);
+      $now = new DateTime();
+      $interval = $createdAt->diff($now);
 
+      if ($interval->y > 0) {
+          $joined = $interval->y . " year" . ($interval->y > 1 ? "s" : "") . " ago";
+      } elseif ($interval->m > 0) {
+          $joined = $interval->m . " month" . ($interval->m > 1 ? "s" : "") . " ago";
+      } elseif ($interval->d > 0) {
+          $joined = $interval->d . " day" . ($interval->d > 1 ? "s" : "") . " ago";
+      } elseif ($interval->h > 0) {
+          $joined = $interval->h . " hour" . ($interval->h > 1 ? "s" : "") . " ago";
+      } elseif ($interval->i > 0) {
+          $joined = $interval->i . " minute" . ($interval->i > 1 ? "s" : "") . " ago";
+      } else {
+          $joined = "just now";
+      }
+      return $joined;
+}
 
 
 
 ?>
+
 
 
 <!DOCTYPE html>
@@ -92,7 +126,7 @@ require "nav.php";
     <div class="flex w-full pt-14">
       <!-- Left Sidebar -->
       <aside class="w-64 fixed left-0 top-14 h-screen overflow-y-auto bg-white p-4 hidden md:block">
-        <div class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors mb-4 cursor-pointer">
+        <div onclick="window.location='profile.php'" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors mb-4 cursor-pointer">
           <img src="../../assist/profiles/<?php echo $user["profile_picture"] ?>" alt="Profile" class="h-10 w-10 rounded-full object-cover">
           <span class="font-medium"><?php echo $user["username"] ?></span>
         </div>
@@ -139,21 +173,8 @@ require "nav.php";
         
         <div class="border-t border-gray-200 my-4"></div>
         
-        <h4 class="text-gray-500 font-medium text-sm px-3 mb-2">Your Shortcuts</h4>
-        <ul class="space-y-1">
-          <li class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-            <div class="h-8 w-8 rounded-lg bg-gray-300 overflow-hidden">
-              <img src="https://via.placeholder.com/60/3b5998/ffffff?text=G" alt="Gaming" class="h-full w-full object-cover">
-            </div>
-            <span>Gaming Zone</span>
-          </li>
-          <li class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-            <div class="h-8 w-8 rounded-lg bg-gray-300 overflow-hidden">
-              <img src="https://via.placeholder.com/60/ff5722/ffffff?text=D" alt="Design" class="h-full w-full object-cover">
-            </div>
-            <span>Design Community</span>
-          </li>
-        </ul>
+
+      
       </aside>
 
       <!-- Main Feed -->
@@ -208,8 +229,8 @@ require "nav.php";
         <!-- Create Post -->
         <div class="bg-white rounded-xl shadow-sm mb-4 p-4">
           <div class="flex items-center space-x-3">
-            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Profile" class="h-10 w-10 rounded-full">
-            <div class="bg-gray-100 rounded-full flex-grow px-4 py-2.5 cursor-pointer hover:bg-gray-200 transition-colors">
+            <img src="../../assist/profiles/<?php echo $user["profile_picture"] ?>" alt="Profile" class="h-10 w-10 rounded-full">
+            <div onclick="window.location='Addpost.php'" class="bg-gray-100 rounded-full flex-grow px-4 py-2.5 cursor-pointer hover:bg-gray-200 transition-colors">
               <p class="text-gray-500">What's on your mind?</p>
             </div>
             <a href="Addpost.php" class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center hover:bg-blue-600 transition-colors text-white">
@@ -234,107 +255,66 @@ require "nav.php";
             </div>
           </div>
         </div>
-
         <!-- Posts -->
         <div class="space-y-4">
-          <!-- Post 1 -->
-          <div class="bg-white rounded-xl shadow-sm overflow-hidden post-card">
-            <div class="p-4">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                  <div class="relative">
-                    <img src="https://randomuser.me/api/portraits/women/65.jpg" class="h-10 w-10 rounded-full">
-                    <span class="absolute bottom-0 right-0 h-3 w-3 bg-green-500 rounded-full border-2 border-white"></span>
-                  </div>
-                  <div>
-                    <h4 class="font-medium">Sarah Johnson</h4>
-                    <p class="text-gray-500 text-xs">2 hours ago • <i class="fas fa-globe-americas"></i></p>
-                  </div>
-                </div>
-                <button class="text-gray-500 hover:bg-gray-100 h-8 w-8 rounded-full flex items-center justify-center transition-colors">
-                  <i class="fas fa-ellipsis-h"></i>
-                </button>
-              </div>
-              
-              <p class="mt-3 mb-3">Enjoying the sunny weather today! Perfect day for a hike in the mountains. 🌞🏔️ #NatureLovers #Weekend</p>
-              
-              <div class="rounded-lg overflow-hidden -mx-4">
-                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" class="w-full h-auto" alt="Mountain Landscape">
-              </div>
-              
-              <div class="flex items-center justify-between text-gray-500 text-sm mt-2 pt-1">
-                <div class="flex items-center space-x-1">
-                  <div class="flex -space-x-1">
-                    <div class="h-5 w-5 rounded-full bg-blue-500 flex items-center justify-center">
-                      <i class="fas fa-thumbs-up text-white text-xs"></i>
+          <?php if (!empty($posts)): ?>
+            <?php foreach ($posts as $post): ?>
+              <div class="bg-white rounded-xl shadow-sm overflow-hidden post-card">
+                <div class="p-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                      <div class="relative">
+                        <img src="../../../public/assist/profiles/<?= htmlspecialchars($post['profile_picture']) ?>" class="h-10 w-10 rounded-full object-cover" />
+                        <!-- Optionally, you can add an online indicator here -->
+                      </div>
+                      <div>
+                        <h4 class="font-medium"><?= htmlspecialchars($post['username']) ?></h4>
+                        <p class="text-gray-500 text-xs">
+                          <?php echo createdAt($post['created_at']) ?>
+                        </p>
+                      </div>
                     </div>
-                    <div class="h-5 w-5 rounded-full bg-red-500 flex items-center justify-center">
-                      <i class="fas fa-heart text-white text-xs"></i>
+                    <button class="text-gray-500 hover:bg-gray-100 h-8 w-8 rounded-full flex items-center justify-center transition-colors">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+
+                  <?php if (!empty($post['description'])): ?>
+                    <p class="mt-3 mb-3"><?= htmlspecialchars($post['description']) ?></p>
+                  <?php endif; ?>
+
+                  <?php if (!empty($post['image_path'])): ?>
+                    <div class="rounded-lg overflow-hidden -mx-4">
+                      <img src="../../../public/assist/posts/<?= htmlspecialchars($post['image_path']) ?>" class="w-full h-auto" />
+                    </div>
+                  <?php endif; ?>
+
+                  <div class="flex items-center justify-between text-gray-500 text-sm mt-2 pt-1">
+                    <!-- You can add like/comment/share counts here if available -->
+                  </div>
+
+                  <div class="border-t border-gray-200 mt-3 pt-1">
+                    <div class="flex justify-between mt-2">
+                      <button class="flex items-center justify-center space-x-2 flex-grow py-1.5 hover:bg-gray-100 rounded-lg transition-colors">
+                        <i class="far fa-thumbs-up text-gray-600"></i>
+                        <span class="font-medium text-gray-600">Like</span>
+                      </button>
+                      <button class="flex items-center justify-center space-x-2 flex-grow py-1.5 hover:bg-gray-100 rounded-lg transition-colors">
+                        <i class="far fa-comment text-gray-600"></i>
+                        <span class="font-medium text-gray-600">Comment</span>
+                      </button>
+                      <button class="flex items-center justify-center space-x-2 flex-grow py-1.5 hover:bg-gray-100 rounded-lg transition-colors">
+                        <i class="fas fa-share text-gray-600"></i>
+                        <span class="font-medium text-gray-600">Share</span>
+                      </button>
                     </div>
                   </div>
-                  <span>328</span>
-                </div>
-                <div class="flex space-x-2">
-                  <span>42 comments</span>
-                  <span>18 shares</span>
                 </div>
               </div>
-              
-              <div class="border-t border-gray-200 mt-3 pt-1">
-                <div class="flex justify-between mt-2">
-                  <button class="flex items-center justify-center space-x-2 flex-grow py-1.5 hover:bg-gray-100 rounded-lg transition-colors">
-                    <i class="far fa-thumbs-up text-gray-600"></i>
-                    <span class="font-medium text-gray-600">Like</span>
-                  </button>
-                  <button class="flex items-center justify-center space-x-2 flex-grow py-1.5 hover:bg-gray-100 rounded-lg transition-colors">
-                    <i class="far fa-comment text-gray-600"></i>
-                    <span class="font-medium text-gray-600">Comment</span>
-                  </button>
-                  <button class="flex items-center justify-center space-x-2 flex-grow py-1.5 hover:bg-gray-100 rounded-lg transition-colors">
-                    <i class="fas fa-share text-gray-600"></i>
-                    <span class="font-medium text-gray-600">Share</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Post 2 -->
-          <div class="bg-white rounded-xl shadow-sm overflow-hidden post-card">
-            <div class="p-4">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                  <img src="https://randomuser.me/api/portraits/men/32.jpg" class="h-10 w-10 rounded-full">
-                  <div>
-                    <h4 class="font-medium">John Smith</h4>
-                    <p class="text-gray-500 text-xs">5 hours ago • <i class="fas fa-user-friends"></i></p>
-                  </div>
-                </div>
-                <button class="text-gray-500 hover:bg-gray-100 h-8 w-8 rounded-full flex items-center justify-center transition-colors">
-                  <i class="fas fa-ellipsis-h"></i>
-                </button>
-              </div>
-              
-              <p class="mt-3 mb-3">Just finished reading this amazing book! Highly recommend it to everyone. What are you all reading these days? 📚</p>
-              
-              <div class="border-t border-gray-200 mt-3 pt-1">
-                <div class="flex justify-between mt-2">
-                  <button class="flex items-center justify-center space-x-2 flex-grow py-1.5 hover:bg-gray-100 rounded-lg transition-colors">
-                    <i class="far fa-thumbs-up text-gray-600"></i>
-                    <span class="font-medium text-gray-600">Like</span>
-                  </button>
-                  <button class="flex items-center justify-center space-x-2 flex-grow py-1.5 hover:bg-gray-100 rounded-lg transition-colors">
-                    <i class="far fa-comment text-gray-600"></i>
-                    <span class="font-medium text-gray-600">Comment</span>
-                  </button>
-                  <button class="flex items-center justify-center space-x-2 flex-grow py-1.5 hover:bg-gray-100 rounded-lg transition-colors">
-                    <i class="fas fa-share text-gray-600"></i>
-                    <span class="font-medium text-gray-600">Share</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <div class="text-center text-gray-500 py-8">No posts to show.</div>
+          <?php endif; ?>
         </div>
       </main>
 

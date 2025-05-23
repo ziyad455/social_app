@@ -2,6 +2,7 @@
 require "../database/Database.php";
 require "../database/conectdb.php";
 session_start();
+session_start();
 
     if($_SERVER['REQUEST_METHOD'] ==='POST' && isset($_POST['submit'])){
         $userName = isset($_POST['email']) ? trim($_POST['email']) : '';
