@@ -5,9 +5,10 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 require "../../../app/database/conectdb.php";
+$user = $db->selectOne("SELECT * FROM users WHERE id = ?", [$_SESSION['id']]);
 require "nav.php";
 
-$user = $db->selectOne("SELECT * FROM users WHERE id = ?", [$_SESSION['id']]);
+
 
 
 
@@ -161,7 +162,7 @@ $user = $db->selectOne("SELECT * FROM users WHERE id = ?", [$_SESSION['id']]);
         <div class="flex space-x-2 overflow-x-auto pb-4 mb-4 hide-scrollbar">
           <div class="relative min-w-[120px] h-48 rounded-xl overflow-hidden shadow-sm cursor-pointer">
             <div class="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60"></div>
-            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Your Story" class="h-full w-full object-cover">
+            <img src="../../assist/profiles/<?php echo $user["profile_picture"] ?>" alt="Your Story" class="h-full w-full object-cover">
             <div class="absolute bottom-0 w-full p-3">
               <div class="flex items-center justify-center h-9 w-9 bg-blue-500 rounded-full mb-2 mx-auto border-4 border-white">
                 <i class="fas fa-plus text-white text-xs"></i>

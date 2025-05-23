@@ -44,7 +44,7 @@ require('../../assist/others/isselcted.php');
   </a>
   
   <a href="#" class="h-10 w-10 rounded-full bg-gray-300 overflow-hidden">
-    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Profile" class="h-full w-full object-cover">
+    <img src="../../assist/profiles/<?php echo $user["profile_picture"] ?>"  alt="Profile" class="h-full w-full object-cover">
   </a>
 </div>
 
