@@ -61,11 +61,12 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST') {
   }
        else{
           try{
-        $query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+        $newImageName = "profile.webp";
+        $query = "INSERT INTO users (username, email, password,profile_picture) VALUES (?, ?, ?,?)";
         $uername = $_SESSION['fname'] . " " . $_SESSION['lname'];
         $email = $_SESSION['email'];
         $password = $_SESSION['password'];
-        $newImageName = "profile.webp";
+       
         
 
         $db->insert($query, [$uername, $email, $password, $newImageName]);
