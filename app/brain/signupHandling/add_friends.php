@@ -27,6 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
          
             $db->insert("INSERT INTO friend_requests (sender_id, receiver_id) VALUES (?, ?)", [$currentUserId, $userId]);
+            $db->insert("INSERT INTO notifications (user_id, category) VALUES (?, ?)", [$currentUserId, 'friend_request']);
+            $notificationId = $db->lastInsertId();
+            $db->insert("INSERT INTO notification_recipients (notification_id, recipient_id) VALUES (?, ?)", [$notificationId, $userId]);
+
             echo json_encode(['status' => 'success', 'message' => 'Friend request sent']);
         } catch (Exception $e) {
             echo json_encode(['status' => 'error', 'message' => 'Failed to send friend request']);

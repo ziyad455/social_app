@@ -5,6 +5,7 @@
 session_start();
 require "../../../app/database/conectdb.php";
 
+
 $userId = $_SESSION['id'];
 
 $query = "
@@ -18,30 +19,9 @@ $posts = $db->selectALL($query, [$userId]);
 
 
 
-$query1 = 'SELECT * FROM users WHERE id = ?';
-$user = $db->selectOne($query1,[$userId]);
+
+
 require "nav.php";
-
-function createdAt($createdA) {
-      $createdAt = new DateTime($createdA);
-      $now = new DateTime();
-      $interval = $createdAt->diff($now);
-
-      if ($interval->y > 0) {
-          $joined = $interval->y . " year" . ($interval->y > 1 ? "s" : "") . " ago";
-      } elseif ($interval->m > 0) {
-          $joined = $interval->m . " month" . ($interval->m > 1 ? "s" : "") . " ago";
-      } elseif ($interval->d > 0) {
-          $joined = $interval->d . " day" . ($interval->d > 1 ? "s" : "") . " ago";
-      } elseif ($interval->h > 0) {
-          $joined = $interval->h . " hour" . ($interval->h > 1 ? "s" : "") . " ago";
-      } elseif ($interval->i > 0) {
-          $joined = $interval->i . " minute" . ($interval->i > 1 ? "s" : "") . " ago";
-      } else {
-          $joined = "just now";
-      }
-      return $joined;
-}
 
 
 
@@ -164,12 +144,14 @@ function createdAt($createdA) {
           </li>
         </ul>
         
-        <div class="mt-4 flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-          <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
-            <i class="fas fa-chevron-down text-gray-600"></i>
-          </div>
-          <span>See More</span>
-        </div>
+        <form action="../../../app/brain/logout.php" method="post" class="mt-4">
+          <button type="submit" class="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer focus:outline-none">
+            <div class="h-8 w-8 rounded-full bg-red-200 flex items-center justify-center">
+              <i class="fas fa-sign-out-alt text-red-600"></i>
+            </div>
+            <span class="text-red-600 font-medium">Logout</span>
+          </button>
+        </form>
         
         <div class="border-t border-gray-200 my-4"></div>
         
@@ -256,66 +238,120 @@ function createdAt($createdA) {
           </div>
         </div>
         <!-- Posts -->
-        <div class="space-y-4">
-          <?php if (!empty($posts)): ?>
-            <?php foreach ($posts as $post): ?>
-              <div class="bg-white rounded-xl shadow-sm overflow-hidden post-card">
-                <div class="p-4">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                      <div class="relative">
-                        <img src="../../../public/assist/profiles/<?= htmlspecialchars($post['profile_picture']) ?>" class="h-10 w-10 rounded-full object-cover" />
-                        <!-- Optionally, you can add an online indicator here -->
-                      </div>
-                      <div>
-                        <h4 class="font-medium"><?= htmlspecialchars($post['username']) ?></h4>
-                        <p class="text-gray-500 text-xs">
-                          <?php echo createdAt($post['created_at']) ?>
-                        </p>
-                      </div>
-                    </div>
-                    <button class="text-gray-500 hover:bg-gray-100 h-8 w-8 rounded-full flex items-center justify-center transition-colors">
-                      <i class="fas fa-ellipsis-h"></i>
-                    </button>
-                  </div>
-
-                  <?php if (!empty($post['description'])): ?>
-                    <p class="mt-3 mb-3"><?= htmlspecialchars($post['description']) ?></p>
-                  <?php endif; ?>
-
-                  <?php if (!empty($post['image_path'])): ?>
-                    <div class="rounded-lg overflow-hidden -mx-4">
-                      <img src="../../../public/assist/posts/<?= htmlspecialchars($post['image_path']) ?>" class="w-full h-auto" />
-                    </div>
-                  <?php endif; ?>
-
-                  <div class="flex items-center justify-between text-gray-500 text-sm mt-2 pt-1">
-                    <!-- You can add like/comment/share counts here if available -->
-                  </div>
-
-                  <div class="border-t border-gray-200 mt-3 pt-1">
-                    <div class="flex justify-between mt-2">
-                      <button class="flex items-center justify-center space-x-2 flex-grow py-1.5 hover:bg-gray-100 rounded-lg transition-colors">
-                        <i class="far fa-thumbs-up text-gray-600"></i>
-                        <span class="font-medium text-gray-600">Like</span>
-                      </button>
-                      <button class="flex items-center justify-center space-x-2 flex-grow py-1.5 hover:bg-gray-100 rounded-lg transition-colors">
-                        <i class="far fa-comment text-gray-600"></i>
-                        <span class="font-medium text-gray-600">Comment</span>
-                      </button>
-                      <button class="flex items-center justify-center space-x-2 flex-grow py-1.5 hover:bg-gray-100 rounded-lg transition-colors">
-                        <i class="fas fa-share text-gray-600"></i>
-                        <span class="font-medium text-gray-600">Share</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
+<div class="space-y-4 posts">
+  <?php if (!empty($posts)): ?>
+    <?php foreach ($posts as $post): ?>
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <!-- Post Header -->
+        <div class="px-4 py-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="relative">
+                <img src="../../../public/assist/profiles/<?= htmlspecialchars($post['profile_picture']) ?>" 
+                     class="h-10 w-10 rounded-full object-cover" />
               </div>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <div class="text-center text-gray-500 py-8">No posts to show.</div>
+              <div>
+                <h4 class="font-semibold text-gray-900 hover:underline cursor-pointer">
+                  <?= htmlspecialchars($post['username']) ?>
+                </h4>
+                <p class="text-gray-500 text-sm hover:underline cursor-pointer">
+                  <?php echo createdAt($post['created_at']) ?> · <i class="fas fa-globe-americas text-xs"></i>
+                </p>
+              </div>
+            </div>
+            <button class="text-gray-400 hover:bg-gray-100 h-9 w-9 rounded-full flex items-center justify-center transition-colors">
+              <i class="fas fa-ellipsis-h text-lg"></i>
+            </button>
+          </div>
+          
+          <!-- Post Content -->
+          <?php if (!empty($post['description'])): ?>
+            <div class="mt-3">
+              <p class="text-gray-900 text-base leading-5"><?= htmlspecialchars($post['description']) ?></p>
+            </div>
           <?php endif; ?>
         </div>
+
+        <!-- Post Image -->
+        <?php if (!empty($post['image_path'])): ?>
+          <div class="w-full">
+            <img src="../../../public/assist/posts/<?= htmlspecialchars($post['image_path']) ?>" 
+                 class="w-full h-auto cursor-pointer hover:brightness-95 transition-all" />
+          </div>
+        <?php endif; ?>
+
+        <!-- Reaction Summary -->
+        <div class="px-4 py-2">
+          <div class="flex items-center justify-between text-sm text-gray-500">
+            <div class="flex items-center space-x-1">
+              <div class="flex -space-x-1">
+                
+                  <?php
+                    $likedUsers = $db->selectALL("SELECT users.profile_picture FROM likes JOIN users ON likes.user_id = users.id WHERE likes.post_id = ?", [$post['id']]);
+                    foreach ($likedUsers as $likedUser):
+                  ?>
+                    <img src="../../../public/assist/profiles/<?= htmlspecialchars($likedUser['profile_picture']) ?>" 
+                         class="h-5 w-5 rounded-full border-2 border-white" />
+                  <?php endforeach; ?>
+
+
+              </div>
+              <span class="liked_people hover:underline cursor-pointer ml-2">
+                <?php echo liked_people($post['id']); ?>
+              </span>
+            </div>
+            <div class="flex space-x-4">
+              <span class="hover:underline cursor-pointer">12 comments</span>
+              <span class="hover:underline cursor-pointer">3 shares</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="border-t border-gray-200 px-4 py-1">
+          <div class="flex">
+            <button class="like flex items-center justify-center space-x-2 flex-1 py-2 hover:bg-gray-50 rounded-md transition-colors mx-1" 
+                    data-post-id="<?php echo $post['id']; ?>">
+              <i class="<?php echo isLiked($post['id'], $_SESSION['id']) ? "fas text-blue-500" : "far text-gray-600" ?> fa-thumbs-up text-xl"></i>
+              <span class="font-medium <?php echo isLiked($post['id'], $_SESSION['id']) ? "text-blue-600" : "text-gray-600" ?>">Like</span>
+            </button>
+            
+            <button class="flex items-center justify-center space-x-2 flex-1 py-2 hover:bg-gray-50 rounded-md transition-colors mx-1">
+              <i class="far fa-comment text-gray-600 text-xl"></i>
+              <span class="font-medium text-gray-600">Comment</span>
+            </button>
+            
+            <button class="flex items-center justify-center space-x-2 flex-1 py-2 hover:bg-gray-50 rounded-md transition-colors mx-1">
+              <i class="far fa-share-square text-gray-600 text-xl"></i>
+              <span class="font-medium text-gray-600">Share</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Comment Section (Optional - can be hidden by default) -->
+        <div class="border-t border-gray-200 px-4 py-3 bg-gray-50">
+          <div class="flex space-x-2">
+            <img src="../../../public/assist/profiles/<?= htmlspecialchars($user['profile_picture'] ?? 'default.jpg') ?>" 
+                 class="h-8 w-8 rounded-full object-cover" />
+            <div class="flex-1">
+              <div class="bg-gray-100 rounded-full px-3 py-2">
+                <input type="text" placeholder="Write a comment..." 
+                       class="w-full bg-transparent text-sm focus:outline-none" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <?php endforeach; ?>
+  <?php else: ?>
+    <div class="text-center text-gray-500 py-12">
+      <i class="fas fa-newspaper text-4xl mb-4"></i>
+      <p class="text-lg">No posts to show</p>
+      <p class="text-sm">When you or your friends share posts, they'll appear here.</p>
+    </div>
+  <?php endif; ?>
+</div>
+
       </main>
 
       <!-- Right Sidebar -->
@@ -401,17 +437,68 @@ function createdAt($createdA) {
       }
     });
     
-    // Post interaction simulations
-    document.querySelectorAll('.post-card button').forEach(button => {
-      button.addEventListener('click', function() {
-        if (this.querySelector('.far.fa-thumbs-up')) {
-          this.querySelector('.far.fa-thumbs-up').classList.remove('far');
-          this.querySelector('.fa-thumbs-up').classList.add('fas');
-          this.querySelector('.fa-thumbs-up').classList.add('text-blue-500');
-          this.querySelector('span').classList.add('text-blue-500');
-        }
+document.querySelectorAll('.like').forEach(button => {
+  button.addEventListener('click', async function () {
+    const postContainer = this.closest('.bg-white');
+    const thumbIcon = this.querySelector('i');
+    const textSpan = this.querySelector('span');
+    const likedPeopleSpan = postContainer.querySelector('.liked_people');
+    
+    let response, request;
+    
+    if (thumbIcon.classList.contains('far')) {
+      // Like action
+      thumbIcon.classList.remove('far', 'text-gray-600');
+      thumbIcon.classList.add('fas', 'text-blue-500');
+      textSpan.classList.remove('text-gray-600');
+      textSpan.classList.add('text-blue-600');
+      
+      request = await fetch('../../../app/brain/users/liked.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          postId: this.getAttribute('data-post-id'),
+          type: 'like'
+        })
       });
-    });
+    } else {
+      // Unlike action
+      thumbIcon.classList.remove('fas', 'text-blue-500');
+      thumbIcon.classList.add('far', 'text-gray-600');
+      textSpan.classList.remove('text-blue-600');
+      textSpan.classList.add('text-gray-600');
+      
+      request = await fetch('../../../app/brain/users/liked.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          postId: this.getAttribute('data-post-id'),
+          type: 'unlike'
+        })
+      });
+    }
+    
+    try {
+      response = await request.json();
+      if (response.status === 'success') {
+        if (likedPeopleSpan) {
+          likedPeopleSpan.textContent = response.liked_people;
+        }
+      } else {
+        console.error('Error:', response.message);
+      }
+    } catch (err) {
+      console.error('Invalid JSON response', err);
+    }
+  });
+});
+
+
+
   </script>
 </body>
 </html>

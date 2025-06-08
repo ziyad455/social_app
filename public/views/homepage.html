@@ -3,469 +3,186 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ConnectHub - Your Social World</title>
+  <title>ConnectHub - Connect with friends and the world around you</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            primary: '#4F46E5',
-            secondary: '#10B981', 
-            dark: '#1E293B',
-            light: '#F8FAFC'
-          },
           fontFamily: {
-            sans: ['Poppins', 'sans-serif']
+            sans: ['Inter', 'sans-serif']
+          },
+          colors: {
+            'facebook-blue': '#1877F2',
+            'facebook-blue-dark': '#166FE5',
+            'facebook-blue-light': '#E7F3FF'
           },
           animation: {
-            'float': 'float 6s ease-in-out infinite',
-            'fadeIn': 'fadeIn 1s ease-in forwards'
+            'fade-in': 'fadeIn 0.5s ease-in-out',
+            'float': 'float 3s ease-in-out infinite'
           },
           keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
             float: {
               '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-10px)' }
-            },
-            fadeIn: {
-              '0%': { opacity: 0 },
-              '100%': { opacity: 1 }
+              '50%': { transform: 'translateY(-8px)' }
             }
           }
         }
       }
     }
   </script>
-  <style>
-    body {
-      scroll-behavior: smooth;
-    }
-    .gradient-text {
-      background: linear-gradient(to right, #4F46E5, #10B981);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .hero-shape {
-      clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
-    }
-    .stat-card:hover {
-      transform: translateY(-5px);
-    }
-    .ripple-btn {
-      position: relative;
-      overflow: hidden;
-    }
-    .ripple-btn:after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      transform: scale(0);
-      transition: transform 0.6s;
-    }
-    .ripple-btn:hover:after {
-      transform: scale(2.5);
-    }
-    .form-control {
-      transition: all 0.3s;
-    }
-    .form-control:focus {
-      border-color: #4F46E5;
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-    }
-    .scroll-indicator {
-      animation: bounce 2s infinite;
-    }
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-      40% {transform: translateY(-10px);}
-      60% {transform: translateY(-5px);}
-    }
-    [x-cloak] { display: none !important; }
-
-    .animate-delay-1s {
-      animation-delay: 1s;
-    }
-    .animate-delay-2s {
-      animation-delay: 2s;
-    }
-  </style>
 </head>
-<body x-data="{ mobileMenu: false }" class="font-sans bg-light text-dark">
+<body class="bg-gray-50 font-sans">
   <!-- Header -->
-  <header class="sticky top-0 z-50 bg-white shadow-md transition-all duration-300">
-    <div class="container mx-auto px-6 py-3">
-      <div class="flex justify-between items-center">
-        <!-- Logo -->
-        <div class="flex items-center space-x-2">
-          <!-- New Logo: Abstract Connected Nodes -->
-          <svg class="w-10 h-10" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M30 55C43.807 55 55 43.807 55 30C55 16.193 43.807 5 30 5C16.193 5 5 16.193 5 30C5 43.807 16.193 55 30 55Z" 
-                  fill="url(#paint0_linear)" stroke="#4F46E5" stroke-width="2"/>
-            <circle cx="20" cy="25" r="6" fill="#10B981"/>
-            <circle cx="40" cy="25" r="6" fill="#4F46E5"/>
-            <circle cx="30" cy="40" r="6" fill="#8B5CF6"/>
-            <path d="M20 25L30 40L40 25" stroke="white" stroke-width="2"/>
-            <path d="M20 25L40 25" stroke="white" stroke-width="2"/>
-            <defs>
-              <linearGradient id="paint0_linear" x1="5" y1="30" x2="55" y2="30" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#4F46E5" stop-opacity="0.1"/>
-                <stop offset="1" stop-color="#10B981" stop-opacity="0.1"/>
-              </linearGradient>
-            </defs>
-          </svg>
-          <span class="text-2xl font-bold gradient-text">ConnectHub</span>
+  <header class="bg-white shadow-sm sticky top-0 z-10">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <div class="w-10 h-10 bg-facebook-blue rounded-full flex items-center justify-center">
+          <span class="text-white font-bold text-xl">C</span>
         </div>
-        
-        <!-- Desktop Nav -->
-        <nav class="hidden md:flex items-center space-x-8">
-          <a href="#features" class="text-gray-600 hover:text-primary transition duration-300">Features</a>
-        </nav>
-        <!-- Mobile Menu Button -->
-        <button @click="mobileMenu = !mobileMenu" class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none" title="Toggle mobile menu">
-          <svg x-show="!mobileMenu" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-          <svg x-show="mobileMenu" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
+        <span class="text-2xl font-bold text-facebook-blue">ConnectHub</span>
       </div>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div x-show="mobileMenu" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform -translate-y-4" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform -translate-y-4" class="md:hidden bg-white shadow-lg rounded-lg m-4 p-4">
-      <nav class="flex flex-col space-y-3">
-        <a href="#features" @click="mobileMenu = false" class="text-gray-600 hover:text-primary py-2 transition duration-300">Features</a>
-        <a href="#about" @click="mobileMenu = false" class="text-gray-600 hover:text-primary py-2 transition duration-300">About</a>
-        <a href="#testimonials" @click="mobileMenu = false" class="text-gray-600 hover:text-primary py-2 transition duration-300">Testimonials</a>
-        <a href="#contact" @click="mobileMenu = false" class="text-gray-600 hover:text-primary py-2 transition duration-300">Contact</a>
-        <div class="pt-3 border-t border-gray-200">
-          <a href="users/login.php" class="block text-center py-2 text-gray-600 hover:text-primary transition duration-300">Log In</a>
-          <a href="users/singup/email.php" class="block mt-2 text-center py-2 bg-primary text-white font-medium rounded-lg hover:bg-indigo-600 transition duration-300 ripple-btn">Sign Up</a>
-        </div>
-      </nav>
+      
+      <div class="flex items-center space-x-4">
+        <a href="users/login.php" class="text-facebook-blue font-medium hover:underline transition-colors duration-200">Log In</a>
+      </div>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="relative hero-shape bg-gradient-to-br from-primary to-secondary py-20 lg:py-32">
-    <div class="absolute inset-0 overflow-hidden">
-      <svg class="absolute left-0 bottom-0 opacity-10" width="800" height="800" fill="none" viewBox="0 0 800 800">
-        <circle cx="400" cy="400" r="350" stroke="white" stroke-width="10" stroke-dasharray="35,40" />
-        <circle cx="400" cy="400" r="250" stroke="white" stroke-width="12" stroke-dasharray="20,30" />
-        <circle cx="400" cy="400" r="150" stroke="white" stroke-width="14" stroke-dasharray="10,20" />
-      </svg>
-    </div>
-    <div class="container mx-auto px-6 relative">
-      <div class="flex flex-col lg:flex-row items-center">
-        <div class="lg:w-1/2 text-center lg:text-left mb-10 lg:mb-0">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            <span class="relative">
-              Connect<br>Engage<br>Thrive
-              <svg class="absolute h-3 w-full -bottom-2 left-0 text-white opacity-70" viewBox="0 0 100 12" preserveAspectRatio="none">
-                <path d="M0,0 Q50,12 100,0" stroke="currentColor" stroke-width="6" fill="none" />
-              </svg>
-            </span>
-          </h1>
-          <p class="text-xl text-white text-opacity-90 max-w-2xl mx-auto lg:mx-0 mb-10">
-            Share meaningful moments, discover like-minded friends, and explore what's happening in your world. Join millions already connecting on ConnectHub.
-          </p>
-          <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center lg:justify-start">
-            <a href="users/singup/email.php" class="px-8 py-4 bg-white text-primary rounded-full hover:bg-gray-100 transition duration-300 font-medium flex items-center justify-center ripple-btn shadow-lg">
-              <span>Get Started</span>
-              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </a>
-            <a href="users/login.php" class="px-8 py-4 border-2 border-white text-white rounded-full hover:bg-white hover:bg-opacity-10 transition duration-300 font-medium flex items-center justify-center">
-
-              <span>login</span>
-            </a>
-          </div>
-        </div>
-        <div class="lg:w-1/2 flex justify-center relative">
-          <div class="w-40 h-40 bg-secondary rounded-full opacity-20 animate-float animate-delay-1s"></div>
-          <!-- Mobile mockup -->
-          <div class="relative z-10 rounded-3xl shadow-2xl overflow-hidden animate-float">
-            <div class="w-32 h-32 bg-primary rounded-full opacity-20 animate-float animate-delay-2s"></div>
-            <div class="absolute inset-0 bg-gradient-to-br from-primary via-transparent to-secondary opacity-50 rounded-3xl"></div>
-          </div>
-          <!-- Decorative elements -->
-          <div class="absolute bottom-0 left-0 transform -translate-x-1/4 translate-y-1/4 z-0">
-            <div class="w-40 h-40 bg-secondary rounded-full opacity-20 animate-float" style="animation-delay: 1s"></div>
-          </div>
-          <div class="absolute top-0 right-0 transform translate-x-1/4 -translate-y-1/4 z-0">
-            <div class="w-32 h-32 bg-primary rounded-full opacity-20 animate-float" style="animation-delay: 2s"></div>
-          </div>
-        </div>
-      </div>
-      <!-- Scroll down indicator -->
-      <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white text-opacity-80 flex flex-col items-center">
-        <span class="text-sm mb-2">Scroll to explore</span>
-        <svg class="w-6 h-6 scroll-indicator" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats Section -->
-  <section class="py-16 bg-white">
-    <div class="container mx-auto px-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="stat-card bg-white rounded-xl shadow-lg p-8 text-center transition-all duration-300">
-          <div class="text-primary text-4xl font-bold mb-2">10M+</div>
-          <p class="text-gray-600 font-medium">Active Users</p>
-        </div>
-        <div class="stat-card bg-white rounded-xl shadow-lg p-8 text-center transition-all duration-300">
-          <div class="text-primary text-4xl font-bold mb-2">160+</div>
-          <p class="text-gray-600 font-medium">Countries</p>
-        </div>
-        <div class="stat-card bg-white rounded-xl shadow-lg p-8 text-center transition-all duration-300">
-          <div class="text-primary text-4xl font-bold mb-2">99.9%</div>
-          <p class="text-gray-600 font-medium">Uptime</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section id="features" class="py-24 bg-gray-50">
-    <div class="container mx-auto px-6">
-      <div class="text-center max-w-3xl mx-auto mb-16">
-        <span class="text-primary font-semibold uppercase tracking-wider">Why ConnectHub</span>
-        <h2 class="text-3xl md:text-4xl font-bold mt-2">Experience the social network built for real connections</h2>
-        <p class="text-gray-600 mt-4 text-lg">
-          Our platform is built from the ground up with modern features designed to enhance your social experience.
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 py-12">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Left Side - Text Content -->
+      <div class="space-y-6 animate-fade-in">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+          Connect with friends and the world around you on <span class="text-facebook-blue">ConnectHub</span>.
+        </h1>
+        
+        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+          See photos and updates from friends in News Feed, share what's new in your life, and find new people to connect with.
         </p>
+
+        <!-- Simple Stats -->
+        <div class="flex space-x-8 pt-6">
+          <div class="text-center">
+            <div class="text-2xl font-bold text-facebook-blue">10M+</div>
+            <div class="text-sm text-gray-500">Active Users</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-facebook-blue">160+</div>
+            <div class="text-sm text-gray-500">Countries</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-facebook-blue">24/7</div>
+            <div class="text-sm text-gray-500">Support</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side - Action Buttons -->
+      <div class="flex flex-col items-center space-y-6 animate-fade-in">
+        <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-md border border-gray-100">
+          <a href="users/singup/email.php" class="block w-full bg-facebook-blue hover:bg-facebook-blue-dark text-white px-6 py-3 rounded-md font-semibold text-lg text-center transition-colors duration-200 shadow-sm">
+            Create New Account
+          </a>
+          
+          <p class="text-gray-600 text-center mt-4 text-sm">
+            By signing up, you agree to our <a href="#" class="text-facebook-blue hover:underline">Terms</a> and <a href="#" class="text-facebook-blue hover:underline">Privacy Policy</a>.
+          </p>
+        </div>
+        
+        <div class="text-center">
+          <p class="text-gray-700 mb-3">Already have an account?</p>
+          <a href="users/login.php" class="inline-block bg-gray-100 hover:bg-gray-200 text-facebook-blue font-medium px-6 py-2 rounded-md transition-colors duration-200">
+            Log In
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Simple Features Section -->
+    <section class="mt-24">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Why people love ConnectHub</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">Simple, safe, and built for real connections with people who matter in your life</p>
       </div>
       
-      <div class="grid md:grid-cols-3 gap-8 mt-12">
-        <!-- Feature 1 -->
-        <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-          <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-2xl flex items-center justify-center mb-6">
-            <i class="fas fa-users text-primary text-2xl"></i>
-          </div>
-          <h3 class="text-xl font-bold mb-4">Authentic Connections</h3>
-          <p class="text-gray-600">
-            Our algorithm prioritizes meaningful relationships over engagement metrics, connecting you with people who share your genuine interests.
-          </p>
-          <a href="#" class="inline-flex items-center mt-6 text-primary font-medium hover:underline">
-            <span>Learn more</span>
-            <svg class="w-4 h-4 ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
-        
-        <!-- Feature 2 -->
-        <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-          <div class="w-16 h-16 bg-secondary bg-opacity-10 rounded-2xl flex items-center justify-center mb-6">
-            <i class="fas fa-search text-secondary text-2xl"></i>
-          </div>
-          <h3 class="text-xl font-bold mb-4">Smart Discovery</h3>
-          <p class="text-gray-600">
-            Discover content and communities tailored to your interests with our advanced AI-powered recommendation engine.
-          </p>
-          <a href="#" class="inline-flex items-center mt-6 text-secondary font-medium hover:underline">
-            <span>Learn more</span>
-            <svg class="w-4 h-4 ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
-        
-        <!-- Feature 3 -->
-        <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-          <div class="w-16 h-16 bg-purple-500 bg-opacity-10 rounded-2xl flex items-center justify-center mb-6">
-            <i class="fas fa-shield-alt text-purple-500 text-2xl"></i>
-          </div>
-          <h3 class="text-xl font-bold mb-4">Privacy First</h3>
-          <p class="text-gray-600">
-            Your data belongs to you. We protect your privacy with industry-leading security and transparent data practices.
-          </p>
-          <a href="#" class="inline-flex items-center mt-6 text-purple-500 font-medium hover:underline">
-            <span>Learn more</span>
-            <svg class="w-4 h-4 ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-8 mt-12">
-        <!-- Feature 4 -->
-        <div class="bg-white rounded-2xl p-8 shadow-lg flex items-start">
-          <div class="w-12 h-12 bg-pink-500 bg-opacity-10 rounded-xl flex items-center justify-center mr-5">
-            <i class="fas fa-comment-alt text-pink-500"></i>
-          </div>
-          <div>
-            <h3 class="text-lg font-bold mb-2">Real-time Messaging</h3>
-            <p class="text-gray-600">
-              Connect instantly with friends through secure, encrypted messaging with media sharing capabilities.
-            </p>
-          </div>
-        </div>
-        
-        <!-- Feature 5 -->
-        <div class="bg-white rounded-2xl p-8 shadow-lg flex items-start">
-          <div class="w-12 h-12 bg-yellow-500 bg-opacity-10 rounded-xl flex items-center justify-center mr-5">
-            <i class="fas fa-calendar-alt text-yellow-500"></i>
-          </div>
-          <div>
-            <h3 class="text-lg font-bold mb-2">Event Organization</h3>
-            <p class="text-gray-600">
-              Create and manage events with your network, complete with RSVPs, discussions, and photo sharing.
-            </p>
-          </div>
-        </div>
-        <!-- Feature 6 -->
-        <div class="bg-white rounded-2xl p-8 shadow-lg flex items-start">
-          <div class="w-12 h-12 bg-blue-500 bg-opacity-10 rounded-xl flex items-center justify-center mr-5">
-            <i class="fas fa-bell text-blue-500"></i>
-          </div>
-          <div>
-            <h3 class="text-lg font-bold mb-2">Instant Notifications</h3>
-            <p class="text-gray-600">
-              Stay updated with real-time notifications about messages, events, and activities that matter to you.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="py-24 bg-white">
-    <div class="container mx-auto px-6">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl md:text-4xl font-bold mb-6">About ConnectHub</h2>
-        <p class="text-gray-600 text-lg mb-8">
-          ConnectHub was founded with the vision to create a positive, inclusive, and safe social community. Our platform empowers genuine interactions and offers innovative tools to help you build lasting relationships.
-        </p>
-        <div class="flex flex-col md:flex-row justify-center gap-8">
-          <div class="flex-1 bg-primary bg-opacity-10 rounded-xl p-6">
-            <h3 class="text-xl font-semibold mb-2">Our Mission</h3>
-            <p class="text-gray-600">
-              To foster authentic connections and provide a safe space for people to express themselves.
-            </p>
-          </div>
-          <div class="flex-1 bg-secondary bg-opacity-10 rounded-xl p-6">
-            <h3 class="text-xl font-semibold mb-2">Our Values</h3>
-            <p class="text-gray-600">
-              Privacy, inclusivity, innovation, and community are at the heart of everything we do.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonials Section -->
-  <section id="testimonials" class="py-24 bg-gray-50">
-    <div class="container mx-auto px-6">
-      <div class="max-w-3xl mx-auto text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">What our users say</h2>
-        <p class="text-gray-600 text-lg">
-          Hear from real members of our community.
-        </p>
-      </div>
       <div class="grid md:grid-cols-3 gap-8">
-        <div class="bg-white rounded-xl shadow-lg p-8">
-          <div class="mb-4">
-            <i class="fas fa-quote-left text-primary text-3xl"></i>
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-100">
+          <div class="w-16 h-16 bg-facebook-blue-light rounded-full flex items-center justify-center mx-auto mb-4 animate-float">
+            <svg class="w-8 h-8 text-facebook-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
           </div>
-          <p class="text-gray-600 mb-4">
-            "ConnectHub is the only social platform where I feel my privacy is truly respected. I’ve made real friends here!"
-          </p>
-          <div class="font-bold text-primary">- Alex J.</div>
+          <h3 class="text-xl font-semibold mb-3 text-center">Connect with Friends</h3>
+          <p class="text-gray-600 text-center">Find and connect with friends, family, and people you know from all around the world.</p>
         </div>
-        <div class="bg-white rounded-xl shadow-lg p-8">
-          <div class="mb-4">
-            <i class="fas fa-quote-left text-primary text-3xl"></i>
+        
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-100">
+          <div class="w-16 h-16 bg-facebook-blue-light rounded-full flex items-center justify-center mx-auto mb-4 animate-float" style="animation-delay: 0.2s">
+            <svg class="w-8 h-8 text-facebook-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
           </div>
-          <p class="text-gray-600 mb-4">
-            "The community events and real-time chat make it so easy to stay connected with friends and meet new people."
-          </p>
-          <div class="font-bold text-primary">- Priya S.</div>
+          <h3 class="text-xl font-semibold mb-3 text-center">Share & Connect</h3>
+          <p class="text-gray-600 text-center">Share photos, videos, and life updates with your network in real-time.</p>
         </div>
-        <div class="bg-white rounded-xl shadow-lg p-8">
-          <div class="mb-4">
-            <i class="fas fa-quote-left text-primary text-3xl"></i>
+        
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-100">
+          <div class="w-16 h-16 bg-facebook-blue-light rounded-full flex items-center justify-center mx-auto mb-4 animate-float" style="animation-delay: 0.4s">
+            <svg class="w-8 h-8 text-facebook-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
           </div>
-          <p class="text-gray-600 mb-4">
-            "I love the fresh design and how easy it is to discover new communities based on my interests."
-          </p>
-          <div class="font-bold text-primary">- Ming L.</div>
+          <h3 class="text-xl font-semibold mb-3 text-center">Stay Safe</h3>
+          <p class="text-gray-600 text-center">Your privacy and security are our top priorities with advanced protection features.</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="py-24 bg-white">
-    <div class="container mx-auto px-6">
-      <div class="max-w-xl mx-auto text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">Contact Us</h2>
-        <p class="text-gray-600 text-lg">
-          Have questions or feedback? Reach out and our team will get back to you soon.
+    <!-- Testimonial Section -->
+    <section class="mt-24 bg-facebook-blue-light rounded-xl p-8">
+      <div class="max-w-3xl mx-auto text-center">
+        <svg class="w-10 h-10 text-facebook-blue mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+        </svg>
+        <p class="text-xl text-gray-700 italic mb-6">
+          "ConnectHub has completely changed how I stay in touch with my friends and family. It's simple, intuitive, and makes sharing life's moments effortless."
         </p>
+        <div class="font-medium text-gray-900">Hamza Chle7</div>
+        <div class="text-sm text-gray-600">ConnectHub User since 2023</div>
       </div>
-      <form class="max-w-xl mx-auto space-y-6">
-        <div>
-          <input type="text" placeholder="Your Name" class="form-control w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none" required>
-        </div>
-        <div>
-          <input type="email" placeholder="Your Email" class="form-control w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none" required>
-        </div>
-        <div>
-          <textarea placeholder="Your Message" class="form-control w-full px-5 py-3 rounded-lg border border-gray-300 focus:outline-none resize-none h-32" required></textarea>
-        </div>
-        <button type="submit" class="ripple-btn px-8 py-4 bg-primary text-white rounded-full font-medium shadow-lg hover:bg-indigo-600 transition duration-300">
-          Send Message
-        </button>
-      </form>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <!-- Footer -->
-  <footer class="py-8 bg-gray-100">
-    <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-      <div class="flex items-center space-x-2 mb-4 md:mb-0">
-        <svg class="w-7 h-7" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M30 55C43.807 55 55 43.807 55 30C55 16.193 43.807 5 30 5C16.193 5 5 16.193 5 30C5 43.807 16.193 55 30 55Z" 
-                fill="url(#paint0_linear_footer)" stroke="#4F46E5" stroke-width="2"/>
-          <circle cx="20" cy="25" r="6" fill="#10B981"/>
-          <circle cx="40" cy="25" r="6" fill="#4F46E5"/>
-          <circle cx="30" cy="40" r="6" fill="#8B5CF6"/>
-          <path d="M20 25L30 40L40 25" stroke="white" stroke-width="2"/>
-          <path d="M20 25L40 25" stroke="white" stroke-width="2"/>
-          <defs>
-            <linearGradient id="paint0_linear_footer" x1="5" y1="30" x2="55" y2="30" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#4F46E5" stop-opacity="0.1"/>
-              <stop offset="1" stop-color="#10B981" stop-opacity="0.1"/>
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-      <div class="text-gray-500 text-sm">
-        &copy; 2025 ConnectHub. All rights reserved.
-      </div>
-      <div class="flex space-x-4 mt-4 md:mt-0">
-        <a href="#" class="text-gray-400 hover:text-primary transition" title="Facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="text-gray-400 hover:text-primary transition" title="Twitter" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="text-gray-400 hover:text-primary transition" title="Instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+  <footer class="bg-white mt-16 py-8 border-t">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center space-x-2 mb-4 md:mb-0">
+          <div class="w-8 h-8 bg-facebook-blue rounded-full flex items-center justify-center">
+            <span class="text-white font-bold text-sm">C</span>
+          </div>
+          <span class="text-lg font-semibold text-facebook-blue">ConnectHub</span>
+        </div>
+        
+        <div class="flex flex-wrap justify-center gap-4 md:gap-6 text-sm text-gray-600 mb-4 md:mb-0">
+          <a href="#" class="hover:text-facebook-blue transition-colors duration-200">Privacy</a>
+          <a href="#" class="hover:text-facebook-blue transition-colors duration-200">Terms</a>
+          <a href="#" class="hover:text-facebook-blue transition-colors duration-200">Help Center</a>
+          <a href="#" class="hover:text-facebook-blue transition-colors duration-200">About</a>
+          <a href="#" class="hover:text-facebook-blue transition-colors duration-200">Careers</a>
+          <a href="#" class="hover:text-facebook-blue transition-colors duration-200">Developers</a>
+        </div>
+        
+        <div class="text-sm text-gray-500">
+          © 2025 ConnectHub. All rights reserved.
+        </div>
       </div>
     </div>
   </footer>

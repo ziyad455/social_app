@@ -242,8 +242,9 @@ require "../../../app/database/conectdb.php";
       text-align: right;
       font-size: 13px;
       color: var(--text-secondary);
-      margin-top: -15px;
-      margin-bottom: 15px;
+      margin-top: 5px;
+      margin-bottom: 25px;
+
     }
     
     .error-message {
