@@ -16,10 +16,12 @@ ORDER BY posts.created_at DESC
 ";
 $posts = $db->selectALL($query, [$userId]);
 
+$onlines =$db->selectALL('SELECT * FROM users WHERE id != ? ',[$userId]) ;
 
 
-$query1 = 'SELECT * FROM users WHERE id = ?';
-$user = $db->selectOne($query1,[$userId]);
+$user = $db->selectOne('SELECT * FROM users WHERE id = ?',[$userId]);
+
+
 require "nav.php";
 
 function createdAt($createdA) {
@@ -279,15 +281,35 @@ function createdAt($createdA) {
                     </button>
                   </div>
 
-                  <?php if (!empty($post['description'])): ?>
-                    <p class="mt-3 mb-3"><?= htmlspecialchars($post['description']) ?></p>
-                  <?php endif; ?>
 
-                  <?php if (!empty($post['image_path'])): ?>
-                    <div class="rounded-lg overflow-hidden -mx-4">
-                      <img src="../../../public/assist/posts/<?= htmlspecialchars($post['image_path']) ?>" class="w-full h-auto" />
-                    </div>
-                  <?php endif; ?>
+
+                  <?php if(isset($post['color'])) {
+                      if(substr($post['color'],0,1)==='l'){
+                        $kind = 'black';
+                      }else{
+                        $kind = 'white';
+                      }
+                      $color = substr($post['color'],1);
+                     echo "
+                      <div style=\"background-color:{$color} ;color:{$kind}\" class=\"flex items-center justify-center rounded-lg mt-3  h-40 border\">
+                          <p class=\"mt-3 mb-3\">" . htmlspecialchars($post["description"]) . "</p>
+                      </div>
+                  ";
+                  }else {
+                      if (!empty($post['description'])) {
+                          echo '<p class="mt-3 mb-3">' . htmlspecialchars($post['description']) . '</p>';
+                      }
+
+                      if (!empty($post['image_path'])) {
+                          echo '<div class="rounded-lg overflow-hidden mt-3 flex justify-center">';
+                          echo '<img src="../../../public/assist/posts/' . htmlspecialchars($post['image_path']) . '" class="max-w-full h-auto rounded-lg" style="max-height: 500px;" />';
+                          echo '</div>';
+                      }
+                  }
+                   ?>
+                      
+
+
 
                   <div class="flex items-center justify-between text-gray-500 text-sm mt-2 pt-1">
                     <!-- You can add like/comment/share counts here if available -->
@@ -335,19 +357,23 @@ function createdAt($createdA) {
             </button>
           </div>
         </div>
-        
-        <ul class="space-y-3">
-          <li class="flex items-center justify-between hover:bg-gray-100 p-2 rounded-lg transition-colors cursor-pointer">
-            <div class="flex items-center space-x-3">
-              <div class="relative">
-                <img src="https://randomuser.me/api/portraits/men/55.jpg" class="w-10 h-10 rounded-full">
-                <span class="absolute bottom-0 right-0 h-3 w-3 bg-green-500 rounded-full border-2 border-white"></span>
+         <ul>
+        <?php foreach ($onlines as $user) : ?>
+          <li>
+            <a href="profile.php?id=<?= $user['id']; ?>" class="flex items-center justify-between hover:bg-gray-100 p-2 rounded-lg transition-colors cursor-pointer">
+              <div class="flex items-center space-x-3">
+                <div class="relative">
+                  <img src="../../assist/profiles/<?= $user["profile_picture"] ?>" class="w-10 h-10 rounded-full">
+                  <span class="absolute bottom-0 right-0 h-3 w-3 bg-green-500 rounded-full border-2 border-white"></span>
+                </div>
+                <span><?= $user['username'] ?></span>
               </div>
-              <span>Ali Hassan</span>
-            </div>
+            </a>
           </li>
+        <?php endforeach; ?>
+          </ul>
           
-          <li class="flex items-center justify-between hover:bg-gray-100 p-2 rounded-lg transition-colors cursor-pointer">
+          <!-- <li class="flex items-center justify-between hover:bg-gray-100 p-2 rounded-lg transition-colors cursor-pointer">
             <div class="flex items-center space-x-3">
               <div class="relative">
                 <img src="https://randomuser.me/api/portraits/women/21.jpg" class="w-10 h-10 rounded-full">
@@ -365,7 +391,7 @@ function createdAt($createdA) {
               </div>
               <span>Omar Farooq</span>
             </div>
-          </li>
+          </li> -->
         </ul>
         
         <div class="border-t border-gray-200 my-4"></div>

@@ -65,18 +65,11 @@
     <div class="p-8 bg-white">
       <form action="../../../app/brain/loginControler.php" method="POST" class="space-y-5">
         <input
-<<<<<<< HEAD
           type="email"
           name="email"
           required
           class="w-full px-4 py-3 rounded-lg border border-blue-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition text-gray-700 shadow-sm"
           placeholder="Email address"
-=======
-          type="text"
-          name="email"
-          class="w-full px-4 py-3 rounded-lg border border-blue-200 focus:outline-none focus:ring-2 focus:ring-accent focus:border-primary transition text-gray-700 mb-4"
-          placeholder="email"
->>>>>>> origin/hamza
         >
 
         <input

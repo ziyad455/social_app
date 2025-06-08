@@ -12,9 +12,32 @@ $Friend_Requests = $db->selectALL(
    [$_SESSION['id'], "pending"]
 );
 
-$users = $db->selectALL('SELECT * FROM users WHERE id != ? AND id NOT IN (SELECT CASE WHEN user1_id = ? THEN user2_id ELSE user1_id END FROM friends WHERE user1_id = ? OR user2_id = ?) AND id NOT IN (SELECT sender_id FROM friend_requests WHERE receiver_id = ? UNION SELECT receiver_id FROM friend_requests WHERE sender_id = ?)
-', [$_SESSION['id'],$_SESSION['id'],$_SESSION['id'], $_SESSION['id'], $_SESSION['id'], $_SESSION['id']]);
-$friends = $db->selectALL('SELECT * FROM users WHERE id IN (SELECT CASE WHEN user1_id = ? THEN user2_id ELSE user1_id END FROM friends WHERE user1_id = ? OR user2_id = ?);', [$_SESSION['id'],$_SESSION['id'], $_SESSION['id']]) ;
+
+$users = $db->selectALL('
+  SELECT * FROM users 
+  WHERE id != ? 
+  AND id NOT IN (
+    SELECT CASE WHEN user1_id = ? THEN user2_id ELSE user1_id END 
+    FROM friends 
+    WHERE user1_id = ? OR user2_id = ?
+  ) 
+  AND id NOT IN (
+    SELECT sender_id FROM friend_requests WHERE receiver_id = ? 
+    UNION 
+    SELECT receiver_id FROM friend_requests WHERE sender_id = ?
+  )
+', [
+  $_SESSION['id'], // 1
+  $_SESSION['id'], // 2
+  $_SESSION['id'], // 3
+  $_SESSION['id'], // 4
+  $_SESSION['id'], // 5
+  $_SESSION['id']  // 6
+]);
+
+$friends = $db->selectALL('
+SELECT * FROM users WHERE id IN (SELECT CASE WHEN user1_id = ? THEN user2_id ELSE user1_id END FROM friends WHERE user1_id = ? OR user2_id = ?);',
+ [$_SESSION['id'],$_SESSION['id'], $_SESSION['id']]) ;
 } catch (Exception $e) {
   echo "Error: " . $e->getMessage();
   exit();
