@@ -24,6 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($data['type'] === 'confirm') {
                 $db->insert("INSERT INTO friends (user1_id, user2_id) VALUES (?, ?)", [$currentUserId, $userId]);
                 $db->delete("DELETE FROM friend_requests WHERE sender_id = ? AND receiver_id = ?", [$userId, $currentUserId]);
+                $db->insert("INSERT INTO notifications (user_id, category) VALUES (?, ?)", [$currentUserId, 'friend_accept']);
+                $notificationId = $db->lastInsertId();
+                $db->insert("INSERT INTO notification_recipients (notification_id, recipient_id) VALUES (?, ?)", [$notificationId, $userId]);
                 echo json_encode(['status' => 'success', 'message' => 'You are now friends']);
             } else {
                 $db->delete("DELETE FROM friend_requests WHERE sender_id = ? AND receiver_id = ?", [$userId, $currentUserId]);

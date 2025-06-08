@@ -49,6 +49,19 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
       $params=[$_SESSION['id'],$image,$description];
       $stmt = $db->insert($query,$params);
       if($stmt){
+      
+            try {
+              $friends = $db->selectALL('SELECT id FROM users WHERE id IN (SELECT CASE WHEN user1_id = ? THEN user2_id ELSE user1_id END FROM friends WHERE user1_id = ? OR user2_id = ?);', [$_SESSION['id'],$_SESSION['id'], $_SESSION['id']]);
+              $db->insert('INSERT INTO notifications(user_id,category) values (?,?)', [$_SESSION['id'], 'post']);
+              $id_notification = $db->lastInsertId();
+              foreach($friends as $friend){
+                $db->insert('INSERT INTO notification_recipients (notification_id, recipient_id) VALUES (?,?)', [$id_notification,$friend['id']]);
+              }
+            } catch (Exception $e) {
+     
+              error_log('Notification error: ' . $e->getMessage());
+              die('An error occurred while processing notifications.');
+            }
           header("Location: ../../../public/views/users/home.php");
           exit();
       }else{
