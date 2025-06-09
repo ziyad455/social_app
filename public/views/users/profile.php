@@ -2,17 +2,29 @@
 session_start();
 require "../../../app/database/conectdb.php";
 
-$query = "
-SELECT * FROM users 
-WHERE id = ? 
-";
+;
 
-$user = $db->selectOne($query,[$_SESSION['id']]);
+if(isset($_GET['id'])){
+    $userId = $_GET['id'];
+}else{
+  $userId = $_SESSION['id'];
+}
 
 
-$query1 = 'SELECT * FROM posts WHERE user_id = ?
-ORDER BY created_at DESC';
-$posts = $db->selectALL($query1,[$_SESSION['id']]);
+// if(isset($_GET['id'])){
+//   $_SESSION['id'] = $_GET['id'];
+// }
+
+$user = $db->selectOne($query = "SELECT * FROM users WHERE id = ? ",[$userId]);
+
+
+$posts = $db->selectALL('SELECT * FROM posts WHERE user_id = ? ORDER BY created_at DESC',[$userId]);
+
+
+
+$friends = $db->selectALL('
+SELECT * FROM users WHERE id IN (SELECT CASE WHEN user1_id = ? THEN user2_id ELSE user1_id END FROM friends WHERE user1_id = ? OR user2_id = ?);',
+ [$userId,$userId, $userId]) ;
 
 function createdAt($createdA) {
       $createdAt = new DateTime($createdA);
@@ -66,9 +78,11 @@ function createdAt($createdA) {
         <button class="btn btn-secondary">
           <i class="fas fa-search"></i>
         </button>
+        <?php if(isset($_GET['id'])) :?>
         <button class="btn btn-primary">
           <i class="fas fa-user-plus"></i> Add Friend
         </button>
+        <?php endif ?>
       </div>
       
       <div class="profile-info">
@@ -117,17 +131,15 @@ function createdAt($createdA) {
           </div>
           
           <div class="friends-grid">
+            <?php  foreach($friends as $freind) : ?>
             <!-- Friend 1 -->
             <div class="friend-card">
-              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Friend" class="friend-pic">
-              <div class="friend-name">Emma</div>
+              <img src="../../assist/profiles/<?php echo $freind["profile_picture"] ?>" alt="Friend" class="friend-pic">
+              <div class="friend-name"><?php echo $freind["username"] ?></div>
             </div>
-            
+            <?php endforeach ?>
             <!-- Friend 2 -->
-            <div class="friend-card">
-              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Friend" class="friend-pic">
-              <div class="friend-name">John</div>
-            </div>
+            
             
             <!-- Add more friends as needed -->
           </div>

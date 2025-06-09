@@ -1,8 +1,11 @@
 <?php
-session_start();
+// session_start();
 // var_dump($_SESSION);
 // die();
+session_start();
 require "../../../app/database/conectdb.php";
+$query1 = 'SELECT * FROM users WHERE id = ?';
+$user = $db->selectOne($query1,[$_SESSION['id']]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -299,8 +302,9 @@ require "../../../app/database/conectdb.php";
     
     <form action="../../../app/brain/user/post.php" class="post-form" method="POST" enctype="multipart/form-data">
       <div class="user-info">
-        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="User" class="user-avatar">
-        <span class="user-name">Sarah Miller</span>
+        <img src="../../../public/assist/profiles/<?= htmlspecialchars($user['profile_picture']) ?>" class="user-avatar" />
+        <span class="user-name"><?php echo $user["username"] ?></span>        
+        
       </div>
       
       <div class="form-group">
@@ -310,12 +314,19 @@ require "../../../app/database/conectdb.php";
       
       <!-- Color Picker Section -->
       <div class="color-picker-container">
-        <div class="color-option" data-color="#ffffff" style="background-color: #ffffff; border: 1px solid #ddd;"></div>
-        <div class="color-option" data-color="#ffe6e6" style="background-color: #ffe6e6;"></div>
-        <div class="color-option" data-color="#e6f7ff" style="background-color: #e6f7ff;"></div>
-        <div class="color-option" data-color="#e6ffe6" style="background-color: #e6ffe6;"></div>
-        <div class="color-option" data-color="#fff2e6" style="background-color: #fff2e6;"></div>
-        <div class="color-option" data-color="#f0e6ff" style="background-color: #f0e6ff;"></div>
+          <div name="#fefefe" class="color-option" data-color="l#fefefe" style="background-color: #fefefe; border: 1px solid #ccc;"></div>
+          <div name="#d6dce5" class="color-option" data-color="l#d6dce5" style="background-color: #d6dce5;"></div>
+          <div name="#b3cde0" class="color-option" data-color="l#b3cde0" style="background-color: #b3cde0;"></div>
+          <div name="#a2d4ab" class="color-option" data-color="l#a2d4ab" style="background-color: #a2d4ab;"></div>
+          <div name="#ffccbc" class="color-option" data-color="l#ffccbc" style="background-color: #ffccbc;"></div>
+          <div name="#f4a261" class="color-option" data-color="l#f4a261" style="background-color: #f4a261;"></div>
+          <div name="#e76f51" class="color-option" data-color="d#e76f51" style="background-color: #e76f51;"></div>
+          <div name="#6d6875" class="color-option" data-color="d#6d6875" style="background-color: #6d6875;"></div>
+          <div name="#4a4e69" class="color-option" data-color="d#4a4e69" style="background-color: #4a4e69;"></div>
+          <div name="#264653" class="color-option" data-color="d#264653" style="background-color: #264653;"></div>
+          <div name="#2a9d8f" class="color-option" data-color="d#2a9d8f" style="background-color: #2a9d8f;"></div>
+          <div name="#8d99ae" class="color-option" data-color="d#8d99ae" style="background-color: #8d99ae;"></div>
+          <input type="hidden" name="selected_color" id="selectedColor">
       </div>
       
       <div class="image-upload-container" id="uploadContainer">
@@ -361,20 +372,18 @@ require "../../../app/database/conectdb.php";
       const errorMessage = document.getElementById('errorMessage');
       const closeBtn = document.querySelector('.close-btn');
       const colorOptions = document.querySelectorAll('.color-option');
+      const colorInput = document.getElementById('selectedColor');
       
-      // Character counter
       textarea.addEventListener('input', function() {
         const count = this.value.length;
         charCount.textContent = count;
         validateForm();
       });
       
-      // File upload handling
       uploadContainer.addEventListener('click', function() {
         fileInput.click();
       });
       
-      // Drag and drop functionality
       uploadContainer.addEventListener('dragover', function(e) {
         e.preventDefault();
         this.classList.add('active');
@@ -423,20 +432,17 @@ require "../../../app/database/conectdb.php";
         validateForm();
       });
       
-      // Color selection functionality
       colorOptions.forEach(option => {
         option.addEventListener('click', function() {
-          // Remove selected class from all options
           colorOptions.forEach(opt => opt.classList.remove('selected'));
+           const selectedColor = this.getAttribute('data-color');
+           colorInput.value = selectedColor;
+           this.classList.add('selected');
           
-          // Add selected class to clicked option
-          this.classList.add('selected');
           
-          // Set textarea background color
-          const selectedColor = this.getAttribute('data-color');
-          textarea.style.backgroundColor = selectedColor;
+          // const selectedColor = this.getAttribute('data-color');
+          textarea.style.backgroundColor = selectedColor.substring(1);
           
-          // If selecting a color, remove any image
           fileInput.value = '';
           previewContainer.style.display = 'none';
           uploadContainer.style.display = '';
@@ -450,7 +456,7 @@ require "../../../app/database/conectdb.php";
         const hasImage = fileInput.files.length > 0;
         const hasBackground = textarea.style.backgroundColor && textarea.style.backgroundColor !== 'rgba(0, 0, 0, 0)';
         
-        if (hasText || hasImage || hasBackground) {
+        if (hasText || hasImage ) {
           submitBtn.disabled = false;
           errorMessage.style.display = 'none';
         } else {
@@ -466,9 +472,7 @@ require "../../../app/database/conectdb.php";
         }, 3000);
       }
       
-      // Close button functionality
       closeBtn.addEventListener('click', function() {
-        // Add your close/redirect logic here
         console.log('Close button clicked');
       });
     });

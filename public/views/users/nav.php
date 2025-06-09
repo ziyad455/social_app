@@ -1,5 +1,5 @@
 <?php 
-require('../../assist/others/functions.php'); 
+
 $unreadCount = $db->selectOne("SELECT COUNT(*) as count FROM notifications n JOIN notification_recipients nr ON n.id = nr.notification_id WHERE nr.recipient_id = ? AND nr.is_read = 0", [$_SESSION['id']])['count']; 
 $query1 = 'SELECT * FROM users WHERE id = ?'; 
 $user = $db->selectOne($query1,[$_SESSION['id']]);  

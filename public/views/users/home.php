@@ -4,6 +4,7 @@
 
 session_start();
 require "../../../app/database/conectdb.php";
+require('../../assist/others/functions.php'); 
 
 
 $userId = $_SESSION['id'];
@@ -17,8 +18,10 @@ ORDER BY posts.created_at DESC
 ";
 $posts = $db->selectALL($query, [$userId]);
 
+$onlines =$db->selectALL('SELECT * FROM users WHERE id != ? ',[$userId]) ;
 
 
+$user = $db->selectOne('SELECT * FROM users WHERE id = ?',[$userId]);
 
 
 require "nav.php";
@@ -238,47 +241,58 @@ require "nav.php";
           </div>
         </div>
         <!-- Posts -->
-<div class="space-y-4 posts">
-  <?php if (!empty($posts)): ?>
-    <?php foreach ($posts as $post): ?>
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <!-- Post Header -->
-        <div class="px-4 py-3">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-              <div class="relative">
-                <img src="../../../public/assist/profiles/<?= htmlspecialchars($post['profile_picture']) ?>" 
-                     class="h-10 w-10 rounded-full object-cover" />
-              </div>
-              <div>
-                <h4 class="font-semibold text-gray-900 hover:underline cursor-pointer">
-                  <?= htmlspecialchars($post['username']) ?>
-                </h4>
-                <p class="text-gray-500 text-sm hover:underline cursor-pointer">
-                  <?php echo createdAt($post['created_at']) ?> · <i class="fas fa-globe-americas text-xs"></i>
-                </p>
-              </div>
-            </div>
-            <button class="text-gray-400 hover:bg-gray-100 h-9 w-9 rounded-full flex items-center justify-center transition-colors">
-              <i class="fas fa-ellipsis-h text-lg"></i>
-            </button>
-          </div>
-          
-          <!-- Post Content -->
-          <?php if (!empty($post['description'])): ?>
-            <div class="mt-3">
-              <p class="text-gray-900 text-base leading-5"><?= htmlspecialchars($post['description']) ?></p>
-            </div>
-          <?php endif; ?>
-        </div>
+        <div class="space-y-4">
+          <?php if (!empty($posts)): ?>
+            <?php foreach ($posts as $post): ?>
+              <div class="bg-white rounded-xl shadow-sm overflow-hidden post-card">
+                <div class="p-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                      <div class="relative">
+                        <img src="../../../public/assist/profiles/<?= htmlspecialchars($post['profile_picture']) ?>" class="h-10 w-10 rounded-full object-cover" />
+                        <!-- Optionally, you can add an online indicator here -->
+                      </div>
+                      <div>
+                        <h4 class="font-medium"><?= htmlspecialchars($post['username']) ?></h4>
+                        <p class="text-gray-500 text-xs">
+                          <?php echo createdAt($post['created_at']) ?>
+                        </p>
+                      </div>
+                    </div>
+                    <button class="text-gray-500 hover:bg-gray-100 h-8 w-8 rounded-full flex items-center justify-center transition-colors">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
 
-        <!-- Post Image -->
-        <?php if (!empty($post['image_path'])): ?>
-          <div class="w-full">
-            <img src="../../../public/assist/posts/<?= htmlspecialchars($post['image_path']) ?>" 
-                 class="w-full h-auto cursor-pointer hover:brightness-95 transition-all" />
-          </div>
-        <?php endif; ?>
+
+
+                  <?php if(isset($post['color'])) {
+                      if(substr($post['color'],0,1)==='l'){
+                        $kind = 'black';
+                      }else{
+                        $kind = 'white';
+                      }
+                      $color = substr($post['color'],1);
+                     echo "
+                      <div style=\"background-color:{$color} ;color:{$kind}\" class=\"flex items-center justify-center rounded-lg mt-3  h-40 border\">
+                          <p class=\"mt-3 mb-3\">" . htmlspecialchars($post["description"]) . "</p>
+                      </div>
+                  ";
+                  }else {
+                      if (!empty($post['description'])) {
+                          echo '<p class="mt-3 mb-3">' . htmlspecialchars($post['description']) . '</p>';
+                      }
+
+                      if (!empty($post['image_path'])) {
+                          echo '<div class="rounded-lg overflow-hidden mt-3 flex justify-center">';
+                          echo '<img src="../../../public/assist/posts/' . htmlspecialchars($post['image_path']) . '" class="max-w-full h-auto rounded-lg" style="max-height: 500px;" />';
+                          echo '</div>';
+                      }
+                  }
+                   ?>
+                      
+
+
 
         <!-- Reaction Summary -->
         <div class="px-4 py-2">
@@ -371,19 +385,23 @@ require "nav.php";
             </button>
           </div>
         </div>
-        
-        <ul class="space-y-3">
-          <li class="flex items-center justify-between hover:bg-gray-100 p-2 rounded-lg transition-colors cursor-pointer">
-            <div class="flex items-center space-x-3">
-              <div class="relative">
-                <img src="https://randomuser.me/api/portraits/men/55.jpg" class="w-10 h-10 rounded-full">
-                <span class="absolute bottom-0 right-0 h-3 w-3 bg-green-500 rounded-full border-2 border-white"></span>
+         <ul>
+        <?php foreach ($onlines as $user) : ?>
+          <li>
+            <a href="profile.php?id=<?= $user['id']; ?>" class="flex items-center justify-between hover:bg-gray-100 p-2 rounded-lg transition-colors cursor-pointer">
+              <div class="flex items-center space-x-3">
+                <div class="relative">
+                  <img src="../../assist/profiles/<?= $user["profile_picture"] ?>" class="w-10 h-10 rounded-full">
+                  <span class="absolute bottom-0 right-0 h-3 w-3 bg-green-500 rounded-full border-2 border-white"></span>
+                </div>
+                <span><?= $user['username'] ?></span>
               </div>
-              <span>Ali Hassan</span>
-            </div>
+            </a>
           </li>
+        <?php endforeach; ?>
+          </ul>
           
-          <li class="flex items-center justify-between hover:bg-gray-100 p-2 rounded-lg transition-colors cursor-pointer">
+          <!-- <li class="flex items-center justify-between hover:bg-gray-100 p-2 rounded-lg transition-colors cursor-pointer">
             <div class="flex items-center space-x-3">
               <div class="relative">
                 <img src="https://randomuser.me/api/portraits/women/21.jpg" class="w-10 h-10 rounded-full">
@@ -401,7 +419,7 @@ require "nav.php";
               </div>
               <span>Omar Farooq</span>
             </div>
-          </li>
+          </li> -->
         </ul>
         
         <div class="border-t border-gray-200 my-4"></div>
@@ -427,7 +445,7 @@ require "nav.php";
   </div>
   
   <script>
-    // Sticky header shadow effect
+   // Sticky header shadow effect
     window.addEventListener('scroll', function() {
       const header = document.querySelector('nav');
       if (window.scrollY > 0) {

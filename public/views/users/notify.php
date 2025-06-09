@@ -4,6 +4,7 @@
 
 session_start();
 require "../../../app/database/conectdb.php";
+require('../../assist/others/functions.php'); 
 require "nav.php";
 
 $userId = $_SESSION['id'];
